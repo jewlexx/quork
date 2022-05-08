@@ -6,7 +6,7 @@ fn main() {
             .cpp(true)
             .files(vec![
                 "src/windows/admin/admin.c",
-                "src/windows/network/network.cpp",
+                "src/windows/network/network.c",
             ])
             .compile("windows");
     } else {
