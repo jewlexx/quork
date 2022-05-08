@@ -1,4 +1,3 @@
-#ifdef _WIN32
 #include <windows.h>
 
 int IsElevated() {
@@ -17,16 +16,3 @@ int IsElevated() {
   }
   return fRet;
 }
-#else
-#include <unistd.h>
-
-int IsElevated() {
-  uid_t uid = geteuid();
-
-  if (uid == 0) {
-    return 1;
-  } else {
-    return 0;
-  }
-}
-#endif
