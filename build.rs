@@ -3,9 +3,10 @@ fn main() {
 
     if cfg!(target_os = "windows") {
         builder
+            .cpp(true)
             .files(vec![
                 "src/windows/admin/admin.c",
-                "src/windows/network/network.c",
+                "src/windows/network/network.cpp",
             ])
             .compile("windows");
     } else {

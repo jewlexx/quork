@@ -1,8 +1,9 @@
-#ifdef _WIN32
 #include <netlistmgr.h>
 
-int IsDisconnected() { return NLM_CONNECTIVITY_DISCONNECTED; }
+int IsDisconnected() {
+  INetwork net;
+  VARIANT_BOOL connected;
+  net.lpVtbl->get_IsConnected(net.lpVtbl, &connected);
+}
 
 int HasTraffic() { return 0; }
-
-#endif
