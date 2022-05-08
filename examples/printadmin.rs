@@ -1,4 +1,4 @@
-use quork::is_admin;
+use quork::admin::is_admin;
 
 fn main() {
     let admin = is_admin();
