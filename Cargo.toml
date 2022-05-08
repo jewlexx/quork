@@ -1,7 +1,8 @@
 [package]
-name = "is-admin"
+name = "quork"
 version = "0.1.0"
 license = "MIT"
+description = "A collection of small things that make interacting with the system easier"
 keywords = ["admin", "sys"]
 authors = ["Juliette Cordor"]
 documentation = "https://docs.rs/is-admin"

@@ -1,6 +1,6 @@
-fn main() {
-    use is_admin::is_admin;
+use quork::is_admin;
 
+fn main() {
     let admin = is_admin();
 
     println!("Is the user an admin? {}", admin);
