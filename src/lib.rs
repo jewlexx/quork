@@ -1,3 +1,5 @@
+#![warn(missing_docs)]
+
 extern "C" {
     fn IsElevated() -> u8;
 }
