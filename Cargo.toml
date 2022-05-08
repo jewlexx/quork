@@ -2,6 +2,9 @@
 name = "is-admin"
 version = "0.1.0"
 license = "MIT"
+keywords = ["admin", "sys"]
+authors = ["Juliette Cordor"]
+documentation = "https://docs.rs/is-admin"
 repository = "https://github.com/jewlexx/is-admin.git"
 homepage = "https://github.com/jewlexx/is-admin.git"
 edition = "2021"
