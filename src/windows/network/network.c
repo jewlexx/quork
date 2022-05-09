@@ -1,4 +1,5 @@
 #include <netlistmgr.h>
+#include <windows.h>
 
 int IsDisconnected() {
   INetwork net;
