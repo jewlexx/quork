@@ -84,6 +84,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "87f3e037eac156d1775da914196f0f37741a274155e34a0b7e427c35d2a2ecb9"
 
 [[package]]
+name = "pkg-config"
+version = "0.3.25"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "1df8c4ec4b0627e53bdf214615ad287367e482558cf84b109250b37464dc03ae"
+
+[[package]]
 name = "proc-macro2"
 version = "1.0.38"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -94,12 +100,13 @@ dependencies = [
 
 [[package]]
 name = "quork"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "cc",
  "cfg-if",
  "cxx",
  "cxx-build",
+ "pkg-config",
 ]
 
 [[package]]
