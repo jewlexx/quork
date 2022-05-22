@@ -1,10 +1,10 @@
-#include <netlistmgr.h>
-#include <windows.h>
+// #include <netlistmgr.h>
+// #include <windows.h>
 
-int IsDisconnected() {
-  INetwork net;
-  VARIANT_BOOL connected;
-  net.lpVtbl->get_IsConnected(net.lpVtbl, &connected);
-}
+// int IsDisconnected() {
+//   INetwork net;
+//   VARIANT_BOOL connected;
+//   net.lpVtbl->get_IsConnected(net.lpVtbl, &connected);
+// }
 
-int HasTraffic() { return 0; }
+// int HasTraffic() { return 0; }
