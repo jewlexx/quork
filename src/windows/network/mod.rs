@@ -1,3 +1,5 @@
+use windows_api::Networking::Connectivity::NetworkUsage;
+
 extern "C" {
     fn IsDisconnected() -> u8;
 }
