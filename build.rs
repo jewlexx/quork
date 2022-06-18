@@ -3,14 +3,7 @@ fn main() {
 
     if cfg!(target_os = "windows") {
         builder
-            .files(vec![
-                "src/windows/admin/admin.c",
-                "src/windows/network/network.c",
-            ])
+            .files(vec!["src/windows/admin/admin.c"])
             .compile("windows");
-    } else {
-        builder
-            .files(vec!["src/unix/admin/admin.c"])
-            .compile("unix");
     }
 }
