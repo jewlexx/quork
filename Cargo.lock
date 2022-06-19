@@ -69,12 +69,12 @@ dependencies = [
  "cc",
  "cfg-if",
  "nix",
- "quork-macros",
+ "quork-proc",
  "windows",
 ]
 
 [[package]]
-name = "quork-macros"
+name = "quork-proc"
 version = "0.1.0"
 dependencies = [
  "proc-macro2",
