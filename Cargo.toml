@@ -2,7 +2,7 @@
 name = "quork"
 version = "0.1.0"
 license = "MIT"
-description = "A collection of small things that come in handy"
+description = "A collection of small things that don't deserve their own crate"
 keywords = ["admin", "sys"]
 authors = ["Juliette Cordor"]
 documentation = "https://docs.rs/is-admin"
