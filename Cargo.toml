@@ -12,6 +12,9 @@ edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
+[workspace]
+members = ["quork-proc"]
+
 [dependencies]
 cfg-if = "1.0.0"
 nix = "0.24.1"
