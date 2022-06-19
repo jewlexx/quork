@@ -1,5 +1,3 @@
-#![warn(missing_docs)]
-
 pub use quork_proc as macros;
 
 cfg_if::cfg_if! {
