@@ -1,7 +1,5 @@
 namespace network
 {
-    INTERNET_STATUS IsConnectedToNetwork();
-
     enum class INTERNET_STATUS
     {
         CONNECTED,
@@ -9,4 +7,7 @@ namespace network
         CONNECTED_TO_LOCAL,
         CONNECTION_ERROR
     };
+
+    INTERNET_STATUS IsConnectedToNetwork();
+
 }
