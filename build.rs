@@ -7,7 +7,7 @@ fn main() {
             .compile("win_admin");
 
         cxx_build::bridge("src/windows/network.rs")
-            .file("src/windows/network.cpp")
+            .file("src/windows/network.cc")
             .flag_if_supported("-std=c++14")
             .compile("win_net");
     }
