@@ -1,4 +1,4 @@
-#[cxx::bridge]
+#[cxx::bridge(namespace = network)]
 mod ffi {
     enum INTERNET_STATUS {
         CONNECTED,

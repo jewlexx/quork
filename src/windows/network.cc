@@ -6,49 +6,52 @@
 // Instruct linker to link to the required COM libraries
 #pragma comment(lib, "ole32.lib")
 
-INTERNET_STATUS IsConnectedToNetwork()
+namespace network
 {
-    INTERNET_STATUS connectedStatus = INTERNET_STATUS::CONNECTION_ERROR;
-    HRESULT hr = S_FALSE;
-
-    try
+    INTERNET_STATUS IsConnectedToNetwork()
     {
-        hr = CoInitialize(NULL);
-        if (SUCCEEDED(hr))
+        INTERNET_STATUS connectedStatus = INTERNET_STATUS::CONNECTION_ERROR;
+        HRESULT hr = S_FALSE;
+
+        try
         {
-            INetworkListManager *pNetworkListManager;
-            hr = CoCreateInstance(CLSID_NetworkListManager, NULL, CLSCTX_ALL, __uuidof(INetworkListManager), (LPVOID *)&pNetworkListManager);
+            hr = CoInitialize(NULL);
             if (SUCCEEDED(hr))
             {
-                NLM_CONNECTIVITY nlmConnectivity = NLM_CONNECTIVITY::NLM_CONNECTIVITY_DISCONNECTED;
-                VARIANT_BOOL isConnected = VARIANT_FALSE;
-                hr = pNetworkListManager->get_IsConnectedToInternet(&isConnected);
+                INetworkListManager *pNetworkListManager;
+                hr = CoCreateInstance(CLSID_NetworkListManager, NULL, CLSCTX_ALL, __uuidof(INetworkListManager), (LPVOID *)&pNetworkListManager);
                 if (SUCCEEDED(hr))
                 {
-                    if (isConnected == VARIANT_TRUE)
-                        connectedStatus = INTERNET_STATUS::CONNECTED;
-                    else
-                        connectedStatus = INTERNET_STATUS::DISCONNECTED;
-                }
-
-                if (isConnected == VARIANT_FALSE && SUCCEEDED(pNetworkListManager->GetConnectivity(&nlmConnectivity)))
-                {
-                    if (nlmConnectivity & (NLM_CONNECTIVITY_IPV4_LOCALNETWORK | NLM_CONNECTIVITY_IPV4_SUBNET | NLM_CONNECTIVITY_IPV6_LOCALNETWORK | NLM_CONNECTIVITY_IPV6_SUBNET))
+                    NLM_CONNECTIVITY nlmConnectivity = NLM_CONNECTIVITY::NLM_CONNECTIVITY_DISCONNECTED;
+                    VARIANT_BOOL isConnected = VARIANT_FALSE;
+                    hr = pNetworkListManager->get_IsConnectedToInternet(&isConnected);
+                    if (SUCCEEDED(hr))
                     {
-                        connectedStatus = INTERNET_STATUS::CONNECTED_TO_LOCAL;
+                        if (isConnected == VARIANT_TRUE)
+                            connectedStatus = INTERNET_STATUS::CONNECTED;
+                        else
+                            connectedStatus = INTERNET_STATUS::DISCONNECTED;
                     }
-                }
 
-                pNetworkListManager->Release();
+                    if (isConnected == VARIANT_FALSE && SUCCEEDED(pNetworkListManager->GetConnectivity(&nlmConnectivity)))
+                    {
+                        if (nlmConnectivity & (NLM_CONNECTIVITY_IPV4_LOCALNETWORK | NLM_CONNECTIVITY_IPV4_SUBNET | NLM_CONNECTIVITY_IPV6_LOCALNETWORK | NLM_CONNECTIVITY_IPV6_SUBNET))
+                        {
+                            connectedStatus = INTERNET_STATUS::CONNECTED_TO_LOCAL;
+                        }
+                    }
+
+                    pNetworkListManager->Release();
+                }
             }
+
+            CoUninitialize();
+        }
+        catch (...)
+        {
+            connectedStatus = INTERNET_STATUS::CONNECTION_ERROR;
         }
 
-        CoUninitialize();
+        return connectedStatus;
     }
-    catch (...)
-    {
-        connectedStatus = INTERNET_STATUS::CONNECTION_ERROR;
-    }
-
-    return connectedStatus;
 }

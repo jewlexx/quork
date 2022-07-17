@@ -1,7 +1,10 @@
-enum class INTERNET_STATUS
+namespace network
 {
-    CONNECTED,
-    DISCONNECTED,
-    CONNECTED_TO_LOCAL,
-    CONNECTION_ERROR
-};
+    enum class INTERNET_STATUS
+    {
+        CONNECTED,
+        DISCONNECTED,
+        CONNECTED_TO_LOCAL,
+        CONNECTION_ERROR
+    };
+}
