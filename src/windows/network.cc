@@ -1,16 +1,9 @@
 #include <ObjBase.h> // include the base COM header
 #include <Netlistmgr.h>
+#include <network.hpp>
 
 // Instruct linker to link to the required COM libraries
 #pragma comment(lib, "ole32.lib")
-
-enum class INTERNET_STATUS
-{
-    CONNECTED,
-    DISCONNECTED,
-    CONNECTED_TO_LOCAL,
-    CONNECTION_ERROR
-};
 
 INTERNET_STATUS IsConnectedToNetwork()
 {

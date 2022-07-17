@@ -1,6 +1,6 @@
 #[cxx::bridge]
 mod ffi {
-    enum NetworkStatus {
+    enum INTERNET_STATUS {
         CONNECTED,
         DISCONNECTED,
         CONNECTED_TO_LOCAL,
@@ -8,13 +8,15 @@ mod ffi {
     }
 
     unsafe extern "C++" {
-        type NetworkStatus;
+        include!("quork/include/windows/network.hpp");
 
-        fn IsConnectedToNetwork() -> NetworkStatus;
+        type INTERNET_STATUS;
+
+        fn IsConnectedToNetwork() -> INTERNET_STATUS;
     }
 }
 
-pub use ffi::NetworkStatus;
+pub use ffi::INTERNET_STATUS as NetworkStatus;
 
 /// Network Status
 ///
