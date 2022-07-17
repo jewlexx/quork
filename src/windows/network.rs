@@ -8,7 +8,7 @@ mod ffi {
     }
 
     unsafe extern "C++" {
-        include!("../../include/check-net.hpp");
+        include!("../../include/windows/check-net.hpp");
         type NetworkStatus;
 
         fn IsConnectedToNetwork() -> NetworkStatus;
