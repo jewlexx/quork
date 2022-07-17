@@ -1,5 +1,7 @@
 namespace network
 {
+    INTERNET_STATUS IsConnectedToNetwork();
+
     enum class INTERNET_STATUS
     {
         CONNECTED,
