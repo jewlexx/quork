@@ -1,6 +1,7 @@
+#include "quork/include/windows/network.hpp"
+#include "quork/src/windows/network.rs.h"
 #include <ObjBase.h> // include the base COM header
 #include <Netlistmgr.h>
-#include <network.hpp>
 
 // Instruct linker to link to the required COM libraries
 #pragma comment(lib, "ole32.lib")
