@@ -9,6 +9,7 @@ mod ffi {
 
     unsafe extern "C++" {
         include!("quork/include/windows/check-net.hpp");
+
         type NetworkStatus;
 
         fn IsConnectedToNetwork() -> NetworkStatus;
