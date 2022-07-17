@@ -17,6 +17,7 @@ members = ["quork-proc"]
 
 [dependencies]
 cfg-if = "1.0.0"
+cxx = "1.0.72"
 quork-proc = { version = "0.1.0", path = "quork-proc" }
 
 [build-dependencies]

@@ -3,7 +3,7 @@ fn main() {
 
     if cfg!(windows) {
         builder
-            .files(vec!["src/windows/admin/admin.c"])
-            .compile("windows");
+            .file("src/windows/admin/admin.c")
+            .compile("win_admin");
     }
 }

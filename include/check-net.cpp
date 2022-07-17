@@ -6,7 +6,7 @@
 // Instruct linker to link to the required COM libraries
 #pragma comment(lib, "ole32.lib")
 
-INTERNET_STATUS IsConnectedToInternet()
+INTERNET_STATUS IsConnectedToNetwork()
 {
     INTERNET_STATUS connectedStatus = INTERNET_STATUS::CONNECTION_ERROR;
     HRESULT hr = S_FALSE;

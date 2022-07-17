@@ -6,4 +6,4 @@ enum class INTERNET_STATUS
     CONNECTION_ERROR
 };
 
-INTERNET_STATUS IsConnectedToInternet();
+INTERNET_STATUS IsConnectedToNetwork();
