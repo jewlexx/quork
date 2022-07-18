@@ -1,13 +1,13 @@
 namespace network
 {
-    enum class INTERNET_STATUS
+    enum class INTERNET_STATUS : std::uint8_t
     {
-        CONNECTED = 0,
-        DISCONNECTED = 1,
-        CONNECTED_TO_LOCAL = 2,
-        CONNECTION_ERROR = 3
-    };
+        {CONNECTED = 0,
+         DISCONNECTED = 1,
+         CONNECTED_TO_LOCAL = 2,
+         CONNECTION_ERROR = 3};
 
-    INTERNET_STATUS IsConnectedToNetwork();
+        INTERNET_STATUS IsConnectedToNetwork();
 
+    }
 }
