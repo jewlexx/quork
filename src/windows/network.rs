@@ -10,7 +10,7 @@ mod ffi {
     unsafe extern "C++" {
         include!("quork/include/windows/network.h");
 
-        type INTERNET_STATUS;
+        // type INTERNET_STATUS;
 
         fn IsConnectedToNetwork() -> INTERNET_STATUS;
     }

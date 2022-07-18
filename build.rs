@@ -8,7 +8,6 @@ fn main() {
 
         cxx_build::bridge("src/windows/network.rs")
             .file("src/windows/network.cc")
-            .include("include/windows/network.h")
             .flag_if_supported("-std=c++14")
             .compile("win_net");
 
