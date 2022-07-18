@@ -8,7 +8,7 @@ mod ffi {
     }
 
     unsafe extern "C++" {
-        // include!("quork/include/windows/network.hpp");
+        include!("quork/include/windows/network.hpp");
 
         type INTERNET_STATUS;
 
