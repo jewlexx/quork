@@ -13,6 +13,6 @@ fn main() {
 
         println!("cargo:rerun-if-changed=src/windows/admin/admin.c");
         println!("cargo:rerun-if-changed=src/windows/network.cc");
-        println!("cargo:rerun-if-changed=include/windows/network.hpp");
+        println!("cargo:rerun-if-changed=include/windows/network.h");
     }
 }
