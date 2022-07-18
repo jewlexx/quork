@@ -1,4 +1,4 @@
-#include "quork/src/windows/network.rs.h"
+#include "quork/include/windows/network.h"
 #include <ObjBase.h> // include the base COM header
 #include <Netlistmgr.h>
 
