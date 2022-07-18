@@ -1,5 +1,3 @@
-#include "quork/src/windows/network.rs.h"
-
 namespace network
 {
     enum class INTERNET_STATUS
