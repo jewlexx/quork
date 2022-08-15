@@ -2,8 +2,8 @@
 name = "quork-proc"
 description = "The proc macros for quork"
 license = "MIT"
-version = "0.1.0"
-edition = "2021"
+version = "0.1.1"
+edition = "2018"
 
 [lib]
 proc-macro = true
