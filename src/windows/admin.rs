@@ -1,11 +1,11 @@
 //! Utilities to check whether the user is running as root or not.
 
-use windows::{
-    core::*,
-    Win32::{
-        Security::{GetTokenInformation, TokenElevation, TOKEN_ELEVATION, TOKEN_QUERY},
-        System::Threading::{GetCurrentProcess, OpenProcessToken},
-    },
+use std::ffi::c_void;
+
+use windows::Win32::{
+    Foundation::{CloseHandle, HANDLE},
+    Security::{GetTokenInformation, TokenElevation, TOKEN_ELEVATION, TOKEN_QUERY},
+    System::Threading::{GetCurrentProcess, OpenProcessToken},
 };
 
 pub fn is_admin() -> bool {
@@ -14,7 +14,8 @@ pub fn is_admin() -> bool {
     unsafe {
         let process = GetCurrentProcess();
 
-        let mut h_token: windows::Win32::Foundation::HANDLE;
+        // Initialization is irrelevant as it will be overwritten
+        let mut h_token: HANDLE = HANDLE(0);
 
         let token = OpenProcessToken(process, TOKEN_QUERY, &mut h_token).as_bool();
 
@@ -30,7 +31,8 @@ pub fn is_admin() -> bool {
                 &mut elevation as *mut _ as *mut c_void,
                 std::mem::size_of_val(&elevation) as u32,
                 &mut ret_size,
-            ) != 0;
+            )
+            .as_bool();
 
             if token_info {
                 elevated = elevation.TokenIsElevated != 0;
