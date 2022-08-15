@@ -1,5 +1,9 @@
-use quork::windows::network::is_connected_to_network;
+use quork::network::get_connection;
 
 fn main() {
-    println!("{}", is_connected_to_network());
+    let con = get_connection();
+
+    for c in con {
+        println!("{:?}", c);
+    }
 }

@@ -1,11 +1,18 @@
-pub fn get_connection() {
-    let interfaces = nix::net::if_::if_nameindex().unwrap();
+use nix::ifaddrs::getifaddrs;
 
-    for iface in &interfaces {
-        println!(
-            "Interface #{} is called {}",
-            iface.index(),
-            iface.name().to_string_lossy()
-        );
-    }
+#[derive(Debug)]
+pub struct Interface {
+    pub name: String,
+    pub connected: bool,
+}
+
+pub fn get_connection() -> Vec<Interface> {
+    let addrs = getifaddrs().unwrap();
+
+    addrs
+        .map(|addr| Interface {
+            name: addr.interface_name,
+            connected: addr.address.is_some(),
+        })
+        .collect()
 }
