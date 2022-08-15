@@ -14,4 +14,5 @@ cfg_if::cfg_if! {
     }
 }
 
+#[cfg(feature = "admin")]
 pub mod admin;

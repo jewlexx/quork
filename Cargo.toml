@@ -24,3 +24,8 @@ nix = "0.24.1"
 
 [target.'cfg(windows)'.dependencies]
 winapi = { version = "0.3.9", features = ["everything"] }
+
+[features]
+default = ["all"]
+all = ["admin"]
+admin = []
