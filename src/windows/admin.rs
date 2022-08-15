@@ -1,13 +1,10 @@
 //! Utilities to check whether the user is running as root or not.
 
-use winapi::{
-    ctypes::c_void,
-    shared::ntdef::NULL,
-    um::{
-        handleapi::CloseHandle,
-        processthreadsapi::{GetCurrentProcess, OpenProcessToken},
-        securitybaseapi::GetTokenInformation,
-        winnt::{TokenElevation, TOKEN_ELEVATION, TOKEN_QUERY},
+use windows::{
+    core::*,
+    Win32::{
+        Security::{GetTokenInformation, TokenElevation, TOKEN_ELEVATION, TOKEN_QUERY},
+        System::Threading::{GetCurrentProcess, OpenProcessToken},
     },
 };
 
@@ -17,9 +14,9 @@ pub fn is_admin() -> bool {
     unsafe {
         let process = GetCurrentProcess();
 
-        let mut h_token: *mut c_void = NULL;
+        let mut h_token: windows::Win32::Foundation::HANDLE;
 
-        let token = OpenProcessToken(process, TOKEN_QUERY, &mut h_token) != 0;
+        let token = OpenProcessToken(process, TOKEN_QUERY, &mut h_token).as_bool();
 
         if token {
             // This initialization doesn't matter as it will be overwritten by the call to GetTokenInformation.

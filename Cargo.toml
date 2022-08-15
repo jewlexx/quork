@@ -18,7 +18,6 @@ members = ["quork-proc"]
 [dependencies]
 cfg-if = "1.0.0"
 quork-proc = { version = "0.1", path = "quork-proc", optional = true }
-winapi = "0.3"
 nix = "0.25"
 windows = { version = "0.39.0", features = ["Win32_Foundation", "Win32_System_Threading", "Win32_Security"] }
 
@@ -26,4 +25,4 @@ windows = { version = "0.39.0", features = ["Win32_Foundation", "Win32_System_Th
 default = ["all"]
 all = ["macros", "admin"]
 macros = ["quork-proc"]
-admin = ["winapi/handleapi", "winapi/processthreadsapi", "winapi/securitybaseapi"]
+admin = []
