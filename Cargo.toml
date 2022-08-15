@@ -18,8 +18,8 @@ members = ["quork-proc"]
 [dependencies]
 cfg-if = "1.0.0"
 quork-proc = { version = "0.1.0", path = "quork-proc" }
-winapi = { version = "0.3.9", features = ["everything"] }
-nix = "0.24.1"
+winapi = { version = "0.3.9" }
+nix = "0.25.0"
 
 [features]
 default = ["all"]
