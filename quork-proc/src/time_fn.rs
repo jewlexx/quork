@@ -39,7 +39,7 @@ pub fn time_inner(attrs: TokenStream, item: TokenStream) -> TokenStream {
 
     let output = quote! {
         #is_async #is_const #is_unsafe fn #name(#args) #ret {
-            use std::time::{Duration, Instant};
+            use std::time::Instant;
             let start = Instant::now();
             let ret = {
                 #body
