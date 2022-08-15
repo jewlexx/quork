@@ -1,3 +1,3 @@
-//! Contains all of the windows specific functionality
+//! Contains all of the Windows specific functionality
 
 pub mod admin;
