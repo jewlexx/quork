@@ -1,6 +1,6 @@
 mod const_str;
 mod error;
-mod time_main;
+mod time_fn;
 
 /// Implement `const_to_string` for enum variants.
 ///
@@ -15,5 +15,5 @@ pub fn time(
     args: proc_macro::TokenStream,
     input: proc_macro::TokenStream,
 ) -> proc_macro::TokenStream {
-    time_main::time_inner(args, input)
+    time_fn::time_inner(args, input)
 }
