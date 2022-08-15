@@ -17,13 +17,10 @@ members = ["quork-proc"]
 
 [dependencies]
 cfg-if = "1.0.0"
-cxx = { version = "1.0.72", features = ["c++20"] }
-nix = "0.24.1"
 quork-proc = { version = "0.1.0", path = "quork-proc" }
 
 [build-dependencies]
 cc = "1.0.73"
-cxx-build = "1.0.72"
 
 [target.'cfg(not(windows))'.dependencies]
 nix = "0.24.1"
