@@ -24,4 +24,4 @@ nix = "0.25.0"
 [features]
 default = ["all"]
 all = ["admin"]
-admin = ["winapi/handleapi"]
+admin = ["winapi/handleapi", "winapi/processthreadsapi", "winapi/securitybaseapi"]
