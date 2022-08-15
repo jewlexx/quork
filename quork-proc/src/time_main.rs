@@ -25,13 +25,10 @@ pub fn time_inner(attrs: TokenStream, item: TokenStream) -> TokenStream {
     let inputs = &input.sig.inputs;
     let body = &*input.block;
     let ret = &input.sig.output;
-
-    if name != "main" {
-        return quote_spanned! {
-            name.span() => compile_error!("#[time] can only be applied to the main function");
-        }
-        .into();
-    }
+    let args = &input.sig.inputs;
+    let is_const = &input.sig.constness;
+    let is_unsafe = &input.sig.unsafety;
+    let is_async = &input.sig.asyncness;
 
     if !inputs.is_empty() {
         return quote_spanned! {
@@ -41,7 +38,7 @@ pub fn time_inner(attrs: TokenStream, item: TokenStream) -> TokenStream {
     }
 
     let output = quote! {
-        fn main() #ret {
+        #is_async #is_const #is_unsafe fn #name(#args) #ret {
             use std::time::{Duration, Instant};
             let start = Instant::now();
             let ret = {
