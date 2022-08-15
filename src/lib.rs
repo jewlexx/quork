@@ -8,10 +8,10 @@ pub use quork_proc as macros;
 
 cfg_if::cfg_if! {
     if #[cfg(target_os = "windows")] {
-        pub mod windows;
-        pub use windows::*;
+        mod windows;
     } else {
-        pub mod unix;
-        pub use unix::*;
+        mod unix;
     }
 }
+
+pub mod admin;

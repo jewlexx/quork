@@ -11,7 +11,6 @@ use winapi::{
     },
 };
 
-/// Checks if the user is an administrator.
 pub fn is_admin() -> bool {
     let mut elevated: bool = false;
 
