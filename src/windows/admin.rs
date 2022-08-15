@@ -1,3 +1,5 @@
+//! Utilities to check whether the user is running as root or not.
+
 use winapi::{
     ctypes::c_void,
     shared::ntdef::NULL,
