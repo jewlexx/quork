@@ -5,10 +5,10 @@ license = "MIT"
 description = "A collection of small things that don't deserve their own crate"
 keywords = ["admin", "sys"]
 authors = ["Juliette Cordor"]
-documentation = "https://docs.rs/is-admin"
-repository = "https://github.com/jewlexx/is-admin.git"
-homepage = "https://github.com/jewlexx/is-admin.git"
-edition = "2021"
+documentation = "https://docs.rs/quork"
+repository = "https://github.com/jewlexx/quork.git"
+homepage = "https://github.com/jewlexx/quork.git"
+edition = "2018"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
