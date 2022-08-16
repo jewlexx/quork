@@ -6,7 +6,7 @@
 
 namespace network
 {
-    enum class INTERNET_STATUS : std::uint8_t
+    enum class INTERNET_STATUS : wint_t
     {
         CONNECTED = 0,
         DISCONNECTED = 1,
