@@ -20,7 +20,7 @@ cfg_if::cfg_if! {
 pub mod admin;
 
 /// A simple trait to map the return value of a Mutex in a nice little closure
-pub trait LockMap<T> {
+pub trait LockMap<T: ?Sized> {
     /// Maps the return value of a Mutex in a closure,
     /// dropping and unlocking the Mutex after execution and returning the result
     fn map<F, R>(&mut self, f: F) -> R
@@ -32,6 +32,9 @@ pub trait LockMap<T> {
 }
 
 impl<'a, T> LockMap<T> for std::sync::MutexGuard<'a, T> {}
+
+#[cfg(feature = "spin")]
+impl<'a, T> LockMap<T> for spin::mutex::MutexGuard<'a, T> {}
 
 #[cfg(feature = "parking_lot")]
 impl<'a, T> LockMap<T> for parking_lot::MutexGuard<'a, T> {}
