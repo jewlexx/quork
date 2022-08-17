@@ -18,3 +18,18 @@ cfg_if::cfg_if! {
 
 #[cfg(feature = "admin")]
 pub mod admin;
+
+/// A simple trait to map the return value of a Mutex in a nice little closure
+pub trait LockMap<T> {
+    /// Maps the return value of a Mutex in a closure,
+    /// dropping and unlocking the Mutex after execution and returning the result
+    fn map<F, R>(&mut self, f: F) -> R
+    where
+        F: FnOnce(&mut Self) -> R,
+    {
+        f(self)
+    }
+}
+
+#[cfg(feature = "parking_lot")]
+impl<'a, T> LockMap<T> for parking_lot::MutexGuard<'a, T> {}
