@@ -31,5 +31,7 @@ pub trait LockMap<T> {
     }
 }
 
+impl<'a, T> LockMap<T> for std::sync::MutexGuard<'a, T> {}
+
 #[cfg(feature = "parking_lot")]
 impl<'a, T> LockMap<T> for parking_lot::MutexGuard<'a, T> {}
