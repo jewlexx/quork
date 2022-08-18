@@ -4,6 +4,7 @@
 //!
 //! The lower levels can be hard. So this crate is intended to help with that by abstracing the lower levels to high level code
 
+#[cfg(feature = "macros")]
 pub use quork_proc as macros;
 
 mod imacros;
