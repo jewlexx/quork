@@ -1,6 +1,6 @@
 [package]
 name = "quork"
-version = "0.1.6"
+version = "0.1.7"
 license = "MIT"
 description = "A collection of small things that don't deserve their own crate"
 keywords = ["admin", "sys"]
@@ -20,15 +20,12 @@ cfg-if = "1.0.0"
 quork-proc = { version = "0.1", path = "quork-proc", optional = true }
 spin = { version = "0.9", optional = true }
 parking_lot = { version = "0.12", optional = true }
-
-[target.'cfg(windows)'.dependencies]
-windows = { version = "0.39", features = ["Win32_Foundation", "Win32_System_Threading", "Win32_Security"] }
-
-[target.'cfg(not(windows))'.dependencies]
-nix = "0.25"
+windows = { version = "0.39", features = ["Win32_Foundation", "Win32_System_Threading", "Win32_Security"], optional = true }
+nix = { version = "0.25", optional = true }
 
 [features]
 default = ["all"]
-all = ["macros", "admin"]
+all = ["macros", "admin", "system"]
 macros = ["quork-proc"]
+system = ["windows", "nix"]
 admin = []
