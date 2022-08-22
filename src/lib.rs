@@ -7,6 +7,8 @@
 #[cfg(feature = "macros")]
 pub use quork_proc as macros;
 
+pub mod prelude;
+
 mod imacros;
 
 cfg_if::cfg_if! {
