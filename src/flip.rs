@@ -1,4 +1,7 @@
-use std::sync::{Mutex, MutexGuard, TryLockError};
+use std::sync::{
+    atomic::{AtomicBool, Ordering},
+    Mutex, MutexGuard, TryLockError,
+};
 
 /// Flip the given value
 ///
@@ -60,6 +63,23 @@ where
 
     fn flipped(&'a self) -> T {
         self.try_flipped().unwrap()
+    }
+}
+
+impl<'a> FlipImmut<'a, bool> for AtomicBool {
+    type Error = FlipImmutError<bool>;
+
+    fn try_flip(&'a self) -> Result<(), Self::Error> {
+        let val = self.load(Ordering::Relaxed);
+        self.store(!val, Ordering::Relaxed);
+
+        Ok(())
+    }
+
+    fn try_flipped(&'a self) -> Result<bool, Self::Error> {
+        let val = self.load(Ordering::Relaxed);
+
+        Ok(!val)
     }
 }
 
