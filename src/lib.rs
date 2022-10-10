@@ -7,6 +7,9 @@
 #[cfg(feature = "macros")]
 pub use quork_proc as macros;
 
+#[cfg(feature = "flip")]
+pub mod flip;
+
 pub mod prelude;
 
 mod imacros;

@@ -22,10 +22,12 @@ spin = { version = "0.9", optional = true }
 parking_lot = { version = "0.12", optional = true }
 windows = { version = "0.39", features = ["Win32_Foundation", "Win32_System_Threading", "Win32_Security"], optional = true }
 nix = { version = "0.25", optional = true }
+thiserror = { version = "1.0.37", optional = true }
 
 [features]
 default = ["all"]
-all = ["macros", "admin", "system"]
+all = ["macros", "admin", "system", "flip"]
 macros = ["quork-proc"]
 system = ["windows", "nix"]
 admin = []
+flip = ["thiserror"]
