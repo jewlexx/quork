@@ -139,35 +139,47 @@ mod tests {
 
     #[test]
     fn test_flip_mutex() {
-        let bool = *BOOL.lock().unwrap();
+        assert!(*BOOL.lock().unwrap());
 
-        assert!(bool);
-
-        BOOL.lock().unwrap().flip();
+        BOOL.flip();
 
         assert!(!*BOOL.lock().unwrap());
 
-        assert!(BOOL.lock().unwrap().flipped())
+        assert!(BOOL.flipped())
     }
 
-    // static ATOMIC: AtomicBool = AtomicBool::new(true);
+    #[cfg(feature = "parking_lot")]
+    static PARKING_LOT: parking_lot::Mutex<bool> = parking_lot::Mutex::new(true);
 
-    // impl Flip for AtomicBool {
-    //     fn flipped(&self) -> Self {
-    //         let mut bool = self.load(std::sync::atomic::Ordering::Relaxed);
+    #[cfg(feature = "parking_lot")]
+    fn test_flip_parking_mutex() {
+        assert!(*PARKING_LOT.lock());
 
-    //         bool.flip();
+        PARKING_LOT.flip();
 
-    //         Self::new(bool)
-    //     }
-    // }
+        assert!(!*PARKING_LOT.lock());
 
-    // #[test]
-    // fn test_flip_atomic() {
-    //     let bool = ATOMIC.load(std::sync::atomic::Ordering::Relaxed);
+        assert!(PARKING_LOT.flipped())
+    }
 
-    //     assert!(bool);
+    static ATOMIC: AtomicBool = AtomicBool::new(true);
 
-    //     ATOMIC.flip();
-    // }
+    impl Flip for AtomicBool {
+        fn flipped(&self) -> Self {
+            let mut bool = self.load(std::sync::atomic::Ordering::Relaxed);
+
+            bool.flip();
+
+            Self::new(bool)
+        }
+    }
+
+    #[test]
+    fn test_flip_atomic() {
+        let bool = ATOMIC.load(std::sync::atomic::Ordering::Relaxed);
+
+        assert!(bool);
+
+        ATOMIC.flip();
+    }
 }
