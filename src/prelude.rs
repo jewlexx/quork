@@ -6,3 +6,6 @@
 
 pub use crate::macros::*;
 pub use crate::LockMap;
+
+#[cfg(feature = "flip")]
+pub use crate::flip::*;

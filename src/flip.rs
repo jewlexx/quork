@@ -1,3 +1,5 @@
+//! Utilities to flip booleans
+
 use std::sync::{
     atomic::{AtomicBool, Ordering},
     Mutex, MutexGuard, TryLockError,
@@ -25,10 +27,13 @@ impl Flip for bool {
     }
 }
 
+/// Error types for the [`FlipImmut`] trait
 #[derive(Debug, thiserror::Error)]
 pub enum FlipImmutError<T> {
+    /// The error returned by the std `try_lock` method
     StdLockError(#[from] TryLockError<T>),
 
+    /// The [`parking_lot::Mutex::try_lock`] function returned [`None`]
     #[cfg(feature = "parking_lot")]
     LockError,
 }
@@ -51,16 +56,29 @@ where
     Self: Sized,
     Self::Error: std::fmt::Debug,
 {
+    /// The error type for the immutable flip trait
     type Error;
 
+    /// Attempt to flip the value
     fn try_flip(&'a self) -> Result<(), Self::Error>;
 
+    /// Flip the value
+    ///
+    /// # Panics
+    ///
+    /// Will panic if the [`FlipImmut::try_flip`] method returns an error
     fn flip(&'a self) {
         self.try_flip().unwrap()
     }
 
+    /// Attempt to flip the value, without mutating the value
     fn try_flipped(&'a self) -> Result<T, Self::Error>;
 
+    /// Flip the value
+    ///
+    /// # Panics
+    ///
+    /// Will panic if the [`FlipImmut::try_flipped`] method returns an error
     fn flipped(&'a self) -> T {
         self.try_flipped().unwrap()
     }
