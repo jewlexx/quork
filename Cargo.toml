@@ -1,6 +1,6 @@
 [package]
 name = "quork"
-version = "0.2.0"
+version = "0.2.1"
 license = "MIT"
 description = "A collection of small things that don't deserve their own crate"
 keywords = ["admin", "sys"]
@@ -19,14 +19,12 @@ members = ["quork-proc"]
 quork-proc = { version = "0.1", path = "quork-proc", optional = true }
 spin = { version = "0.9", optional = true }
 parking_lot = { version = "0.12", optional = true }
-windows = { version = "0.42", features = ["Win32_Foundation", "Win32_System_Threading", "Win32_Security"], optional = true }
-nix = { version = "0.25", optional = true }
 thiserror = { version = "1.0.37", optional = true }
+is-root = { version = "0.1.2", optional = true }
 
 [features]
 default = ["all"]
-all = ["macros", "admin", "system", "flip"]
+all = ["macros", "root", "flip"]
 macros = ["quork-proc"]
-system = ["windows", "nix"]
-admin = []
+root = ["is-root"]
 flip = ["thiserror"]

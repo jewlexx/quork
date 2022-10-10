@@ -14,14 +14,8 @@ pub mod prelude;
 
 mod imacros;
 
-#[cfg(target_os = "windows")]
-mod windows;
-
-#[cfg(not(target_os = "windows"))]
-mod unix;
-
-#[cfg(feature = "admin")]
-pub mod admin;
+#[cfg(feature = "root")]
+pub use is_root::is_root;
 
 /// A simple trait to map the return value of a Mutex in a nice little closure
 pub trait LockMap<T: ?Sized> {
