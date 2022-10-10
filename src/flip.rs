@@ -170,6 +170,7 @@ mod tests {
     static PARKING_LOT: parking_lot::Mutex<bool> = parking_lot::Mutex::new(true);
 
     #[cfg(feature = "parking_lot")]
+    #[test]
     fn test_flip_parking_mutex() {
         assert!(*PARKING_LOT.lock());
 
