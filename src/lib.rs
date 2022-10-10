@@ -11,13 +11,11 @@ pub mod prelude;
 
 mod imacros;
 
-cfg_if::cfg_if! {
-    if #[cfg(target_os = "windows")] {
-        mod windows;
-    } else {
-        mod unix;
-    }
-}
+#[cfg(target_os = "windows")]
+mod windows;
+
+#[cfg(not(target_os = "windows"))]
+mod unix;
 
 #[cfg(feature = "admin")]
 pub mod admin;
