@@ -12,8 +12,6 @@ pub mod flip;
 
 pub mod prelude;
 
-mod imacros;
-
 #[cfg(feature = "root")]
 pub use is_root::is_root;
 
