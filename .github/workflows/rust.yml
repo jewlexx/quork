@@ -21,6 +21,7 @@ jobs:
       uses: actions/cache@v3.0.10
       with:
         path: target
+        key: rust-target-cache
     
     - name: Build
       run: cargo build --verbose --all-features
