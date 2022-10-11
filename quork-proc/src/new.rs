@@ -26,9 +26,9 @@ pub fn derive_new(ast: DeriveInput) -> TokenStream {
 
     quote! {
         impl #name {
-            pub fn new(#fields) -> Self {
+            pub fn new(#(args,)*) -> Self {
                 Self {
-                    #fields
+                    #(con,)*
                 }
             }
         }
