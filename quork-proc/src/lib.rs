@@ -1,5 +1,6 @@
 mod const_str;
 mod error;
+mod new;
 mod time_fn;
 
 /// Implement `const_to_string` for enum variants.
