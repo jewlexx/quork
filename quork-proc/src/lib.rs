@@ -1,6 +1,7 @@
 use syn::{parse_macro_input, DeriveInput};
 
 mod const_str;
+#[macro_use]
 mod error;
 mod new;
 mod time_fn;

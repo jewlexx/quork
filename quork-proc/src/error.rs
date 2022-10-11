@@ -4,3 +4,9 @@ pub fn token_stream_with_error(mut tokens: TokenStream, error: syn::Error) -> To
     tokens.extend(error.into_compile_error());
     tokens
 }
+
+macro_rules! macro_error {
+    ($($tt:tt)*) => {
+        quote! {compile_error!(stringify!($($tt)*))}
+    };
+}
