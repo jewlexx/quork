@@ -1,6 +1,6 @@
 use proc_macro2::TokenStream;
 use syn::DeriveInput;
 
-pub fn derive_new(input: DeriveInput) -> TokenStream {
+pub fn derive_new(ast: DeriveInput) -> TokenStream {
     quote!()
 }
