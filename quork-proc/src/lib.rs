@@ -11,6 +11,14 @@ pub fn derive_const_str(input: proc_macro::TokenStream) -> proc_macro::TokenStre
     const_str::into_const_str(input.into()).into()
 }
 
+/// Implement `new` fn for structs
+///
+/// Will follow the form of `new(field: Type, ...) -> Self`, where all fields are required.
+#[proc_macro_derive(New)]
+pub fn derive_new(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
+    new::derive_new(input.into()).into()
+}
+
 #[proc_macro_attribute]
 pub fn time(
     args: proc_macro::TokenStream,
