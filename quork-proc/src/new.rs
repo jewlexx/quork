@@ -12,11 +12,13 @@ pub fn derive_new(ast: DeriveInput) -> TokenStream {
         .iter()
         .enumerate()
         .map(|(i, field)| {
-            let ident = field
+            let ident: TokenStream = field
                 .ident
                 .as_ref()
                 .map(|i| i.to_string())
-                .unwrap_or_else(|| i.to_string());
+                .unwrap_or_else(|| format!("con{}", i))
+                .parse()
+                .unwrap();
 
             let ty = &field.ty;
 
