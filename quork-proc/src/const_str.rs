@@ -1,10 +1,8 @@
 use proc_macro2::TokenStream;
 use quote::quote;
-use syn::{parse_macro_input, Data, DeriveInput, Fields};
+use syn::{Data, DeriveInput, Fields};
 
-pub fn into_const_str(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
-    let ast = parse_macro_input!(input as DeriveInput);
-
+pub fn into_const_str(ast: DeriveInput) -> TokenStream {
     let name = &ast.ident;
     let vars = match &ast.data {
         Data::Enum(v) => &v.variants,
@@ -37,5 +35,5 @@ pub fn into_const_str(input: proc_macro::TokenStream) -> proc_macro::TokenStream
         }
     };
 
-    v.into()
+    v
 }

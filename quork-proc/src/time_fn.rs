@@ -13,10 +13,12 @@ pub fn time_inner(attrs: TokenStream, item: TokenStream) -> TokenStream {
         "s" | "seconds" | "" => TimeFormat::Seconds,
         "ms" | "milliseconds" => TimeFormat::Milliseconds,
         "ns" | "nanoseconds" => TimeFormat::Nanoseconds,
-        _ => return quote! { compile_error!("attributes can only be s/ms/ns for seconds, milliseconds and nanoseconds respectively") }.into(),
+        _ => {
+            return quote! { compile_error!("attributes can only be s/ms/ns for seconds, milliseconds and nanoseconds respectively") }
+        }
     } as u8;
 
-    let input: syn::ItemFn = match syn::parse2(item) {
+    let input: syn::ItemFn = match syn::parse2(item.clone()) {
         Ok(input) => input,
         Err(error) => return crate::error::token_stream_with_error(item, error),
     };
@@ -33,8 +35,7 @@ pub fn time_inner(attrs: TokenStream, item: TokenStream) -> TokenStream {
     if !inputs.is_empty() {
         return quote_spanned! {
             inputs.span() => compile_error!("the main function cannot have any arguments");
-        }
-        .into();
+        };
     }
 
     let output = quote! {
@@ -63,5 +64,5 @@ pub fn time_inner(attrs: TokenStream, item: TokenStream) -> TokenStream {
         }
     };
 
-    output.into()
+    output
 }
