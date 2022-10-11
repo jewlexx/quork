@@ -16,7 +16,7 @@ pub fn time_inner(attrs: TokenStream, item: TokenStream) -> TokenStream {
         _ => return quote! { compile_error!("attributes can only be s/ms/ns for seconds, milliseconds and nanoseconds respectively") }.into(),
     } as u8;
 
-    let input: syn::ItemFn = match syn::parse(item.into()) {
+    let input: syn::ItemFn = match syn::parse2(item) {
         Ok(input) => input,
         Err(error) => return crate::error::token_stream_with_error(item, error),
     };
