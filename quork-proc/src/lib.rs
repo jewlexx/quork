@@ -1,9 +1,11 @@
-use syn::{parse_macro_input, DeriveInput};
+use strip::strip_inner;
+use syn::{parse_macro_input, DeriveInput, LitStr};
 
 mod const_str;
 #[macro_use]
 mod error;
 mod new;
+mod strip;
 mod time_fn;
 
 #[macro_use]
@@ -33,4 +35,25 @@ pub fn time(
     input: proc_macro::TokenStream,
 ) -> proc_macro::TokenStream {
     time_fn::time_inner(args.into(), input.into()).into()
+}
+
+#[proc_macro]
+pub fn strip_lines(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
+    let literal = parse_macro_input!(input as LitStr);
+
+    strip_inner(literal, strip::Alignment::None).into()
+}
+
+#[proc_macro]
+pub fn rstrip_lines(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
+    let literal = parse_macro_input!(input as LitStr);
+
+    strip_inner(literal, strip::Alignment::Right).into()
+}
+
+#[proc_macro]
+pub fn lstrip_lines(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
+    let literal = parse_macro_input!(input as LitStr);
+
+    strip_inner(literal, strip::Alignment::Left).into()
 }
