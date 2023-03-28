@@ -27,13 +27,12 @@ pub mod flip;
 #[cfg(feature = "root")]
 pub use is_root::is_root;
 
-/// A simple trait to map the return value of a Mutex in a nice little closure
+/// Map a mutex lock
 pub trait LockMap<T: ?Sized> {
-    /// Maps the return value of a Mutex in a closure,
-    /// dropping and unlocking the Mutex after execution and returning the result
-    fn map<F, R>(&mut self, f: F) -> R
+    /// Maps a mutex lock of T to a value of U
+    fn map<F, U>(&mut self, f: F) -> U
     where
-        F: FnOnce(&mut Self) -> R,
+        F: FnOnce(&mut Self) -> U,
     {
         f(self)
     }
