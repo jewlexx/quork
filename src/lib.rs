@@ -20,8 +20,11 @@ pub use quork_proc as macros;
 #[cfg(feature = "flip")]
 pub mod flip;
 
-#[cfg(feature = "network")]
-pub mod network;
+#[cfg(windows)]
+mod win;
+
+#[cfg(all(windows, feature = "network"))]
+pub use win::network;
 
 #[cfg(feature = "root")]
 pub use is_root::is_root;
