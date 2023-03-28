@@ -22,10 +22,12 @@ spin = { version = "0.9", optional = true }
 parking_lot = { version = "0.12", optional = true }
 thiserror = { version = "1.0.37", optional = true }
 is-root = { version = "0.1.2", optional = true }
+windows = { version = "0.46.0", features = ["Win32_NetworkManagement_IpHelper"], optional = true }
 
 [features]
 default = ["all"]
-all = ["macros", "root", "flip"]
+all = ["macros", "root", "flip", "network"]
+network = ["windows"]
 macros = ["quork-proc"]
 root = ["is-root"]
 flip = ["thiserror"]
