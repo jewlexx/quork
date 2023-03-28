@@ -5,11 +5,7 @@
 //! The lower levels can be hard. So this crate is intended to help with that by abstracing the lower levels to high level code
 
 pub mod prelude {
-    //! Helper items that will most likely be used in every program.
-    //!
-    //! ```
-    //! use quork::prelude::*;
-    //! ```
+    //! `use quork::prelude::*` To include common helpful items
 
     pub use crate::macros::*;
     pub use crate::LockMap;
@@ -23,6 +19,9 @@ pub use quork_proc as macros;
 
 #[cfg(feature = "flip")]
 pub mod flip;
+
+#[cfg(feature = "network")]
+pub mod network;
 
 #[cfg(feature = "root")]
 pub use is_root::is_root;
