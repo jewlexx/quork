@@ -1,6 +1,12 @@
+use std::sync::Mutex;
+
+use once_cell::sync::Lazy;
+
 use windows::Win32::System::Com::{CoInitializeEx, CoUninitialize, COINIT_MULTITHREADED};
 
-pub struct ComInit {
+pub(crate) static COM_INIT: Mutex<Lazy<ComInit>> = Mutex::new(Lazy::new(ComInit::init));
+
+pub(crate) struct ComInit {
     initialized: bool,
 }
 
