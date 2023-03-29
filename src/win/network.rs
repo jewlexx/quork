@@ -99,6 +99,9 @@ extern "C" {
 /// Gets the INetworkListManager COM interface class GUID.
 ///
 /// Not reccomended for use directly, but rather though the [`Connectivity`] enum
+///
+/// # Safety
+/// - Interacts with windows api
 pub unsafe fn get_networklist_manager() -> windows::core::Result<INetworkListManager> {
     ComInit::init();
 
@@ -108,6 +111,9 @@ pub unsafe fn get_networklist_manager() -> windows::core::Result<INetworkListMan
 /// Gets the current connectivity to a network.
 ///
 /// Not reccomended for use directly, but rather though the [`Connectivity`] enum
+///
+/// # Safety
+/// - Interacts with windows api
 pub unsafe fn get_connectivity(
     manager: &INetworkListManager,
 ) -> windows::core::Result<Connectivity> {
