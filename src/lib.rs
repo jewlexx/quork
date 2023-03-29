@@ -29,6 +29,28 @@ pub use win::network;
 #[cfg(feature = "root")]
 pub use is_root::is_root;
 
+pub trait IsTrue {
+    fn is_true(&self) -> bool;
+}
+
+impl IsTrue for Option<bool> {
+    fn is_true(&self) -> bool {
+        match self {
+            Some(true) => true,
+            _ => false,
+        }
+    }
+}
+
+impl<T> IsTrue for Result<bool, T> {
+    fn is_true(&self) -> bool {
+        match self {
+            Ok(true) => true,
+            _ => false,
+        }
+    }
+}
+
 /// Map a mutex lock
 pub trait LockMap<T: ?Sized> {
     /// Maps a mutex lock of T to a value of U

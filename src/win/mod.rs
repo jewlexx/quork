@@ -18,6 +18,8 @@ impl ComInit {
     }
 
     unsafe fn init_com() -> Result<(), windows::core::Error> {
+        if COM_INIT.try_lock().map(|lock| lock.initialized) {}
+
         CoInitializeEx(None, COINIT_MULTITHREADED)
     }
 }
