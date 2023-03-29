@@ -4,6 +4,9 @@ use windows::Win32::System::Com::{CoInitializeEx, CoUninitialize, COINIT_MULTITH
 
 pub(crate) static COM_INIT: Mutex<ComInit> = Mutex::new(ComInit { initialized: false });
 
+pub mod network;
+pub mod root;
+
 #[derive(Debug, Clone)]
 pub(crate) struct ComInit {
     initialized: bool,
@@ -31,5 +34,3 @@ impl Drop for ComInit {
         unsafe { CoUninitialize() }
     }
 }
-
-pub mod network;
