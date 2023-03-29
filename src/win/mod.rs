@@ -1,10 +1,12 @@
-use std::sync::Mutex;
+use std::sync::{atomic::AtomicBool, Mutex};
 
 use once_cell::sync::Lazy;
 
 use windows::Win32::System::Com::{CoInitializeEx, CoUninitialize, COINIT_MULTITHREADED};
 
-pub(crate) static COM_INIT: Mutex<Lazy<ComInit>> = Mutex::new(Lazy::new(ComInit::init));
+use crate::IsTrue;
+
+pub(crate) static COM_INIT: AtomicBool = AtomicBool::new(false);
 
 pub(crate) struct ComInit {
     initialized: bool,
@@ -18,9 +20,11 @@ impl ComInit {
     }
 
     unsafe fn init_com() -> Result<(), windows::core::Error> {
-        if COM_INIT.try_lock().map(|lock| lock.initialized) {}
-
-        CoInitializeEx(None, COINIT_MULTITHREADED)
+        if COM_INIT {
+            Ok(())
+        } else {
+            CoInitializeEx(None, COINIT_MULTITHREADED)
+        }
     }
 }
 

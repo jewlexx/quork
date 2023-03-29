@@ -8,6 +8,8 @@ use windows::{
     },
 };
 
+use super::COM_INIT;
+
 extern "C" {
     fn get_networklist_manager_clsid() -> GUID;
 }
