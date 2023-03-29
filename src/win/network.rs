@@ -16,9 +16,12 @@ use windows::Win32::Networking::NetworkListManager::{
     NLM_CONNECTIVITY_IPV6_SUBNET,
 };
 
+use crate::network::IpVersion;
+
 use super::ComInit;
 
 /// A set of flags that give more information about the underlying connectivity to a network
+#[derive(Debug, Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub enum Connectivity {
     /// The underlying network interfaces have no connectivity to any network.
     Disconnected = 0,
@@ -55,6 +58,23 @@ impl Connectivity {
         unsafe {
             let manager = get_networklist_manager()?;
             get_connectivity(&manager)
+        }
+    }
+
+    /// Gets the version of the connected network
+    ///
+    /// Returns `None` if the version could not be determined.
+    pub fn ip_version(&self) -> Option<IpVersion> {
+        match self {
+            Connectivity::Ipv4Internet
+            | Connectivity::Ipv4Localnetwork
+            | Connectivity::Ipv4Subnet
+            | Connectivity::Ipv4Notraffic => Some(IpVersion::V4),
+            Connectivity::Ipv6Internet
+            | Connectivity::Ipv6Localnetwork
+            | Connectivity::Ipv6Subnet
+            | Connectivity::Ipv6Notraffic => Some(IpVersion::V6),
+            _ => None,
         }
     }
 }

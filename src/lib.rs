@@ -34,8 +34,8 @@ pub use quork_proc as macros;
 #[cfg(feature = "traits")]
 pub mod traits;
 
-#[cfg(all(windows, feature = "network"))]
-pub use win::network;
+#[cfg(feature = "network")]
+pub mod network;
 
 cfg_if::cfg_if! {
     if #[cfg(feature = "root")] {

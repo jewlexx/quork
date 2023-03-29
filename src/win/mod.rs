@@ -6,7 +6,9 @@ use windows::Win32::System::Com::{CoInitializeEx, CoUninitialize, COINIT_MULTITH
 
 pub(crate) static COM_INIT: Mutex<ComInit> = Mutex::new(ComInit { initialized: false });
 
+#[cfg(feature = "network")]
 pub mod network;
+#[cfg(feature = "root")]
 pub mod root;
 
 #[derive(Debug, Clone)]
@@ -15,7 +17,7 @@ pub(crate) struct ComInit {
 }
 
 impl ComInit {
-    pub fn init() {
+    pub(crate) fn init() {
         let is_init = unsafe { Self::init_com() }.is_ok();
         COM_INIT.try_lock().unwrap().initialized = is_init;
     }
