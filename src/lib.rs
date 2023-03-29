@@ -5,43 +5,40 @@
 //! The lower levels can be hard. So this crate is intended to help with that by abstracing the lower levels to high level code
 
 pub mod prelude {
-    //! Helper items that will most likely be used in every program.
-    //!
-    //! ```
-    //! use quork::prelude::*;
-    //! ```
+    //! `use quork::prelude::*` To include common helpful items
 
+    cfg_if::cfg_if! {
+        if #[cfg(feature = "traits")] {
+            pub use crate::traits::flip::*;
+            pub use crate::traits::lock::*;
+            pub use crate::traits::truthy::*;
+        }
+    }
+
+    #[cfg(feature = "macros")]
     pub use crate::macros::*;
-    pub use crate::LockMap;
 
-    #[cfg(feature = "flip")]
-    pub use crate::flip::*;
+    #[cfg(feature = "root")]
+    pub use crate::root::is_root;
 }
+
+#[cfg(windows)]
+pub mod win;
+
+#[cfg(unix)]
+pub mod unix;
 
 #[cfg(feature = "macros")]
 pub use quork_proc as macros;
 
-#[cfg(feature = "flip")]
-pub mod flip;
+#[cfg(feature = "traits")]
+pub mod traits;
 
-#[cfg(feature = "root")]
-pub use is_root::is_root;
+#[cfg(all(windows, feature = "network"))]
+pub use win::network;
 
-/// Map a mutex lock
-pub trait LockMap<T: ?Sized> {
-    /// Maps a mutex lock of T to a value of U
-    fn map<F, U>(&mut self, f: F) -> U
-    where
-        F: FnOnce(&mut Self) -> U,
-    {
-        f(self)
+cfg_if::cfg_if! {
+    if #[cfg(feature = "root")] {
+        pub mod root;
     }
 }
-
-impl<'a, T> LockMap<T> for std::sync::MutexGuard<'a, T> {}
-
-#[cfg(feature = "spin")]
-impl<'a, T> LockMap<T> for spin::mutex::MutexGuard<'a, T> {}
-
-#[cfg(feature = "parking_lot")]
-impl<'a, T> LockMap<T> for parking_lot::MutexGuard<'a, T> {}
