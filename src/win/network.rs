@@ -2,7 +2,10 @@
 
 use windows::{
     core::GUID,
-    Win32::{Networking::NetworkListManager::INetworkListManager, System::Com::CoCreateInstance},
+    Win32::{
+        Networking::NetworkListManager::INetworkListManager,
+        System::Com::{CoCreateInstance, CLSCTX_ALL},
+    },
 };
 
 extern "C" {
@@ -19,7 +22,7 @@ pub unsafe fn get_manager() {
     CoCreateInstance(
         &get_networklist_manager_clsid(),
         std::mem::zeroed(),
-        dwclscontext,
+        CLSCTX_ALL,
     );
 }
 
