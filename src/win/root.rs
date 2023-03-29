@@ -1,3 +1,5 @@
+//! Checks user root privelages
+
 use std::{ffi::c_void, mem};
 
 use windows::Win32::{
@@ -6,6 +8,7 @@ use windows::Win32::{
     System::Threading::{GetCurrentProcess, OpenProcessToken},
 };
 
+/// Checks if a user is elevated
 pub fn is_elevated() -> bool {
     let mut token = INVALID_HANDLE_VALUE;
     unsafe {

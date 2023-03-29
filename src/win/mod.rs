@@ -1,3 +1,5 @@
+//! Windows specific functionality.
+
 use std::sync::Mutex;
 
 use windows::Win32::System::Com::{CoInitializeEx, CoUninitialize, COINIT_MULTITHREADED};

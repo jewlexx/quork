@@ -12,7 +12,16 @@ pub mod prelude {
 
     #[cfg(feature = "flip")]
     pub use crate::flip::*;
+
+    #[cfg(feature = "root")]
+    pub use crate::root::is_root;
 }
+
+#[cfg(windows)]
+pub mod win;
+
+#[cfg(unix)]
+pub mod unix;
 
 #[cfg(feature = "macros")]
 pub use quork_proc as macros;
@@ -20,14 +29,14 @@ pub use quork_proc as macros;
 #[cfg(feature = "flip")]
 pub mod flip;
 
-#[cfg(windows)]
-mod win;
-
 #[cfg(all(windows, feature = "network"))]
 pub use win::network;
 
-#[cfg(all(windows, feature = "root"))]
-pub use win::root;
+cfg_if::cfg_if! {
+    if #[cfg(feature = "root")] {
+        pub mod root;
+    }
+}
 
 /// Defines whether a struct is true
 pub trait IsTrue {

@@ -1,4 +1,4 @@
-use quork::is_root;
+use quork::prelude::is_root;
 
 fn main() {
     let root = is_root();
