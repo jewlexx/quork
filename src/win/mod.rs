@@ -20,10 +20,12 @@ impl ComInit {
     }
 
     unsafe fn init_com() -> Result<(), windows::core::Error> {
-        if COM_INIT.lock().map(|lock| !lock.initialized).is_true() {
+        let mut com_init = COM_INIT.lock().unwrap();
+        if !com_init.initialized {
             CoInitializeEx(None, COINIT_MULTITHREADED)?;
-            COM_INIT.store(true, Ordering::Relaxed);
+            com_init.initialized = true;
         }
+
         Ok(())
     }
 }
