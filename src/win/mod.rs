@@ -20,7 +20,7 @@ impl ComInit {
     }
 
     unsafe fn init_com() -> Result<(), windows::core::Error> {
-        let mut com_init = COM_INIT.lock().unwrap();
+        let mut com_init = COM_INIT.try_lock().unwrap();
         if !com_init.initialized {
             CoInitializeEx(None, COINIT_MULTITHREADED)?;
             com_init.initialized = true;
