@@ -10,8 +10,9 @@ use windows::Win32::{
 
 /// Checks if a user is elevated
 pub fn is_elevated() -> bool {
-    let mut token = INVALID_HANDLE_VALUE;
     unsafe {
+        let mut token = INVALID_HANDLE_VALUE;
+
         let elevated = if OpenProcessToken(GetCurrentProcess(), TOKEN_QUERY, &mut token) == TRUE {
             let mut elevation: TOKEN_ELEVATION = mem::zeroed();
             let mut size = mem::size_of::<TOKEN_ELEVATION>() as u32;
