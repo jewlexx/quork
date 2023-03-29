@@ -1,7 +1,7 @@
 //! Network helpers
 
 use windows::{
-    core::{GUID, PCWSTR},
+    core::GUID,
     Win32::{
         Networking::NetworkListManager::INetworkListManager,
         System::Com::{CoCreateInstance, CLSCTX_ALL},
@@ -12,14 +12,17 @@ extern "C" {
     fn get_networklist_manager_clsid() -> GUID;
 }
 
-pub unsafe fn get_manager() {
+pub unsafe fn get_manager() -> windows::core::Result<()> {
     let layout = {
         let size = std::mem::size_of::<INetworkListManager>();
 
         std::mem::transmute::<_, *mut INetworkListManager>(std::mem::zeroed::<usize>())
     };
 
-    CoCreateInstance(&get_networklist_manager_clsid(), None, CLSCTX_ALL);
+    let manager: INetworkListManager =
+        CoCreateInstance(&get_networklist_manager_clsid(), None, CLSCTX_ALL)?;
+
+    Ok(())
 }
 
 #[cfg(test)]
