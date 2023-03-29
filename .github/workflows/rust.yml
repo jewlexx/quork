@@ -2,29 +2,32 @@ name: Rust
 
 on:
   push:
-    branches: [ "trunk" ]
+    branches: ['trunk']
   pull_request:
-    branches: [ "trunk" ]
+    branches: ['trunk']
 
 env:
   CARGO_TERM_COLOR: always
 
 jobs:
   build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
 
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
 
     steps:
-    - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-    - name: Cache
-      uses: actions/cache@v3.0.10
-      with:
-        path: target
-        key: rust-target-cache
-    
-    - name: Build
-      run: cargo build --verbose --all-features
-      
-    - name: Run tests
-      run: cargo test --verbose --all-features
+      - name: Cache
+        uses: actions/cache@v3.0.10
+        with:
+          path: target
+          key: rust-target-cache
+
+      - name: Build
+        run: cargo build --verbose --all-features
+
+      - name: Run tests
+        run: cargo test --verbose --all-features
