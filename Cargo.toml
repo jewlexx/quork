@@ -20,7 +20,7 @@ members = ["quork-proc"]
 quork-proc = { version = "0.1", path = "quork-proc", optional = true }
 spin = { version = "0.9", optional = true }
 parking_lot = { version = "0.12", optional = true }
-thiserror = { version = "1.0.37", optional = true }
+thiserror = { version = "1.0.39", optional = true }
 is-root = { version = "0.1.2", optional = true }
 
 [features]
