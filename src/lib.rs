@@ -26,8 +26,8 @@ mod win;
 #[cfg(all(windows, feature = "network"))]
 pub use win::network;
 
-#[cfg(feature = "root")]
-pub use is_root::is_root;
+#[cfg(all(windows, feature = "root"))]
+pub use win::root;
 
 /// Defines whether a struct is true
 pub trait IsTrue {

@@ -21,10 +21,14 @@ quork-proc = { version = "0.1", path = "quork-proc", optional = true }
 spin = { version = "0.9", optional = true }
 parking_lot = { version = "0.12", optional = true }
 thiserror = { version = "1.0.37"  }
+cfg-if = "1.0.0"
 
 [target.'cfg(windows)'.dependencies]
-windows = { version = "0.46.0", features = ["Win32_Networking_NetworkListManager", "Win32_System_Com", "Win32_Foundation"] }
+windows = { version = "0.46.0", features = ["Win32_Networking_NetworkListManager", "Win32_System_Com", "Win32_Foundation", "Win32_System_Threading", "Win32_Security"] }
 cc = "1.0.79"
+
+[target.'cfg(unix)'.dependencies]
+nix = "0.26.2"
 
 [features]
 default = ["all"]
