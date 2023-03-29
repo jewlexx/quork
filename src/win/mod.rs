@@ -1,10 +1,8 @@
-use std::sync::{atomic::AtomicBool, Mutex};
-
-use once_cell::sync::Lazy;
+use std::sync::atomic::{AtomicBool, Ordering};
 
 use windows::Win32::System::Com::{CoInitializeEx, CoUninitialize, COINIT_MULTITHREADED};
 
-use crate::IsTrue;
+use crate::prelude::FlipImmut;
 
 pub(crate) static COM_INIT: AtomicBool = AtomicBool::new(false);
 
@@ -20,11 +18,11 @@ impl ComInit {
     }
 
     unsafe fn init_com() -> Result<(), windows::core::Error> {
-        if COM_INIT {
-            Ok(())
-        } else {
-            CoInitializeEx(None, COINIT_MULTITHREADED)
+        if COM_INIT.flipped() {
+            CoInitializeEx(None, COINIT_MULTITHREADED)?;
+            COM_INIT.store(true, Ordering::Relaxed);
         }
+        Ok(())
     }
 }
 
