@@ -15,7 +15,7 @@ extern "C" {
 }
 
 pub unsafe fn get_manager() -> windows::core::Result<()> {
-    COM_INIT.try_lock().unwrap();
+    let unused = COM_INIT.try_lock().unwrap().initialized;
 
     // let layout = {
     //     let size = std::mem::size_of::<INetworkListManager>();
