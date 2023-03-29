@@ -43,7 +43,7 @@ pub enum FlipImmutError<T> {
 /// # Examples
 ///
 /// ```
-/// use quork::flip::{FlipImmut, Flip};
+/// use quork::traits::flip::{FlipImmut, Flip};
 /// use std::sync::atomic::{AtomicBool, Ordering};
 ///
 /// static FOO: AtomicBool = AtomicBool::new(false);
