@@ -10,14 +10,13 @@ extern "C" {
 }
 
 pub unsafe fn get_manager() {
-    println!("clsid at: {:?}", get_networklist_manager_clsid());
-    // let layout = {
-    //     let size = std::mem::size_of::<INetworkListManager>();
+    let layout = {
+        let size = std::mem::size_of::<INetworkListManager>();
 
-    //     std::mem::transmute::<_, *mut INetworkListManager>(std::mem::zeroed::<usize>())
-    // };
+        std::mem::transmute::<_, *mut INetworkListManager>(std::mem::zeroed::<usize>())
+    };
 
-    // CoCreateInstance(CLSID_NetworkListManager, punkouter, dwclscontext);
+    CoCreateInstance(&get_networklist_manager_clsid(), punkouter, dwclscontext);
 }
 
 #[cfg(test)]
