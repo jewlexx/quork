@@ -16,7 +16,11 @@ pub unsafe fn get_manager() {
         std::mem::transmute::<_, *mut INetworkListManager>(std::mem::zeroed::<usize>())
     };
 
-    CoCreateInstance(&get_networklist_manager_clsid(), punkouter, dwclscontext);
+    CoCreateInstance(
+        &get_networklist_manager_clsid(),
+        std::mem::zeroed(),
+        dwclscontext,
+    );
 }
 
 #[cfg(test)]
