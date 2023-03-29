@@ -25,6 +25,7 @@ is-root = { version = "0.1.2", optional = true }
 windows = { version = "0.46.0", features = ["Win32_Networking_NetworkListManager", "Win32_System_Com"], optional = true }
 once_cell = "1.17.1"
 cxx = { version = "1.0.94", features = ["c++20"] }
+cc = "1.0.79"
 
 [features]
 default = ["all"]
@@ -33,3 +34,6 @@ network = ["windows"]
 macros = ["quork-proc"]
 root = ["is-root"]
 flip = ["thiserror"]
+
+[build-dependencies]
+cc = "1.0.79"
