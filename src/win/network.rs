@@ -17,11 +17,11 @@ extern "C" {
 pub unsafe fn get_manager() -> windows::core::Result<()> {
     ComInit::init();
 
-    let layout = {
-        let size = std::mem::size_of::<INetworkListManager>();
+    // let layout = {
+    //     let size = std::mem::size_of::<INetworkListManager>();
 
-        std::mem::transmute::<_, *mut INetworkListManager>(std::mem::zeroed::<usize>())
-    };
+    //     std::mem::transmute::<_, *mut INetworkListManager>(std::mem::zeroed::<usize>())
+    // };
 
     let manager: INetworkListManager =
         CoCreateInstance(&get_networklist_manager_clsid(), None, CLSCTX_ALL)?;
