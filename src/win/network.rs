@@ -8,7 +8,7 @@ use windows::{
     },
 };
 
-use super::{ComInit, COM_INIT};
+use super::ComInit;
 
 extern "C" {
     fn get_networklist_manager_clsid() -> GUID;
@@ -25,6 +25,8 @@ pub unsafe fn get_manager() -> windows::core::Result<()> {
 
     let manager: INetworkListManager =
         CoCreateInstance(&get_networklist_manager_clsid(), None, CLSCTX_ALL)?;
+
+    dbg!(manager);
 
     Ok(())
 }

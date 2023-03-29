@@ -1,9 +1,6 @@
-use std::sync::{atomic::Ordering, Mutex};
+use std::sync::Mutex;
 
-use once_cell::sync::Lazy;
 use windows::Win32::System::Com::{CoInitializeEx, CoUninitialize, COINIT_MULTITHREADED};
-
-use crate::IsTrue;
 
 pub(crate) static COM_INIT: Mutex<ComInit> = Mutex::new(ComInit { initialized: false });
 
