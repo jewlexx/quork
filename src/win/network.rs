@@ -21,6 +21,8 @@ use crate::network::IpVersion;
 use super::ComInit;
 
 /// A set of flags that give more information about the underlying connectivity to a network
+///
+/// The meaning of these can be confusing. See this article for more information: <https://devblogs.microsoft.com/oldnewthing/20230112-00/?p=107700>
 #[derive(Debug, Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub enum Connectivity {
     /// The underlying network interfaces have no connectivity to any network.
