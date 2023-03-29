@@ -32,11 +32,14 @@ nix = "0.26.2"
 
 [features]
 default = ["all"]
-all = ["macros", "root", "flip", "network"]
+all = ["macros", "root", "traits", "network"]
 network = []
 root = []
-flip = []
+traits = []
 macros = ["quork-proc"]
 
 [build-dependencies]
 cc = "1.0.79"
+
+[dev-dependencies]
+is-root = "0.1.2"

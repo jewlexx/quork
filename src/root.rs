@@ -7,3 +7,15 @@ cfg_if::cfg_if! {
         pub use crate::unix::root::is_root;
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_is_root() {
+        // You probably shouldn't be running cargo commands as root
+        // Just checks if the command runs, and is consistent across the inspiration for the implementation
+        assert_eq!(is_root(), is_root::is_root());
+    }
+}
