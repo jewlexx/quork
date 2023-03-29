@@ -2,10 +2,10 @@ use cc::Build;
 
 fn main() {
     if cfg!(windows) {
-        println!("cargo:rustc-link-lib=ole32.lib");
+        println!("cargo:rustc-link-lib=ole32");
 
         Build::new()
-            .include("netlistmgr.h")
-            .compile("netlistmgr.header");
+            .file("include/win/network.c")
+            .compile("networkcomid");
     }
 }

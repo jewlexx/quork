@@ -1,15 +1,16 @@
 //! Network helpers
 
-use windows::Win32::{
-    Networking::NetworkListManager::INetworkListManager, System::Com::CoCreateInstance,
+use windows::{
+    core::GUID,
+    Win32::{Networking::NetworkListManager::INetworkListManager, System::Com::CoCreateInstance},
 };
 
 extern "C" {
-    static CLSID_NetworkListManager: *const windows::core::GUID;
+    fn get_networklist_manager_clsid() -> GUID;
 }
 
 pub unsafe fn get_manager() {
-    println!("clsid at: {:?}", *CLSID_NetworkListManager);
+    println!("clsid at: {:?}", get_networklist_manager_clsid());
     // let layout = {
     //     let size = std::mem::size_of::<INetworkListManager>();
 
