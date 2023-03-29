@@ -8,13 +8,15 @@ use windows::{
     },
 };
 
-use super::COM_INIT;
+use super::ComInit;
 
 extern "C" {
     fn get_networklist_manager_clsid() -> GUID;
 }
 
 pub unsafe fn get_manager() -> windows::core::Result<()> {
+    ComInit::init();
+
     let layout = {
         let size = std::mem::size_of::<INetworkListManager>();
 
