@@ -31,6 +31,6 @@ mod tests {
 
     #[test]
     fn test_get_manager() {
-        unsafe { get_manager() };
+        assert!(unsafe { get_manager() }.is_ok());
     }
 }
