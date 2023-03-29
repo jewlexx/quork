@@ -19,11 +19,11 @@ pub(crate) struct ComInit {
 impl ComInit {
     pub(crate) fn init() {
         let is_init = unsafe { Self::init_com() }.is_ok();
-        COM_INIT.try_lock().unwrap().initialized = is_init;
+        COM_INIT.lock().unwrap().initialized = is_init;
     }
 
     unsafe fn init_com() -> Result<(), windows::core::Error> {
-        let mut com_init = COM_INIT.try_lock().unwrap();
+        let mut com_init = COM_INIT.lock().unwrap();
         if !com_init.initialized {
             CoInitializeEx(None, COINIT_MULTITHREADED)?;
             com_init.initialized = true;
