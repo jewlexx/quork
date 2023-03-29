@@ -29,25 +29,23 @@ pub use win::network;
 #[cfg(feature = "root")]
 pub use is_root::is_root;
 
+/// Defines whether a struct is true
 pub trait IsTrue {
+    /// Defines whether a given type is true
     fn is_true(&self) -> bool;
 }
 
 impl IsTrue for Option<bool> {
+    /// Checks whether the Option is Some and contains a true value
     fn is_true(&self) -> bool {
-        match self {
-            Some(true) => true,
-            _ => false,
-        }
+        matches!(self, Some(true))
     }
 }
 
 impl<T> IsTrue for Result<bool, T> {
+    /// Checks whether the Result is Ok and contains a true value
     fn is_true(&self) -> bool {
-        match self {
-            Ok(true) => true,
-            _ => false,
-        }
+        matches!(self, Ok(true))
     }
 }
 
