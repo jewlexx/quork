@@ -1,10 +1,10 @@
 [package]
 name = "quork"
-version = "0.2.1"
+version = "0.3.0"
 license = "MIT"
 description = "A collection of small things that don't deserve their own crate"
-keywords = ["admin", "sys"]
-categories = ["os", "os::unix-apis", "os::windows-apis"]
+keywords = ["admin", "sys", "windows", "network", "linux"]
+categories = ["os", "os::unix-apis", "os::windows-apis", "development-tools"]
 authors = ["Juliette Cordor"]
 documentation = "https://docs.rs/quork"
 repository = "https://github.com/jewlexx/quork.git"
