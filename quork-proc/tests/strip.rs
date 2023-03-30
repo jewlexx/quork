@@ -44,7 +44,7 @@ fn test_multiline_right() {
     let expected = "        function foo() {
             return \"bar\";
         }
-    ";
+";
 
     #[rustfmt::skip]
     let actual = rstrip_lines!(
