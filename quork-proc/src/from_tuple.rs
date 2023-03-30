@@ -1,9 +1,13 @@
+use proc_macro2::Span;
 use proc_macro_error::abort_call_site;
 use syn::{DeriveInput, Ident, Type};
 
 pub fn derive_from_tuple(input: DeriveInput) -> proc_macro2::TokenStream {
     let ident = &input.ident;
     let data = &input.data;
+    let generics = &input.generics;
+
+    let (impl_generics, ty_generics, where_clause) = generics.split_for_impl();
 
     let mut fields = Vec::new();
 
@@ -16,12 +20,32 @@ pub fn derive_from_tuple(input: DeriveInput) -> proc_macro2::TokenStream {
         _ => abort_call_site!("Should only be derived from a struct"),
     }
 
-    let (idents, types): (Vec<Option<Ident>>, Vec<Type>) = fields.into_iter().unzip();
+    let (mut idents, types): (Vec<Option<Ident>>, Vec<Type>) = fields.into_iter().unzip();
+    let is_tuple_struct = idents.contains(&None);
+
+    for (index, ident) in &mut idents.iter_mut().enumerate() {
+        if ident.is_none() {
+            *ident = Some(Ident::new(&format!("field{index}"), Span::call_site()));
+        }
+    }
+
+    // Check if the struct contains fields without identifiers (usually meaning a tuple struct)
+    let struct_instantiation = if is_tuple_struct {
+        quote! {
+            Self( #(#idents),* )
+        }
+    } else {
+        quote! {
+                Self {
+                    #(#idents,)*
+                }
+        }
+    };
 
     quote! {
-        impl #ident {
-            fn from_tuple() {
-                unimplemented!()
+        impl  #impl_generics #ident #ty_generics #where_clause {
+            fn from_tuple(#(#idents: #types),*) -> Self {
+                #struct_instantiation
             }
         }
     }
