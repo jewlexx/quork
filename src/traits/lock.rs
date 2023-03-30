@@ -18,5 +18,17 @@ impl<'a, T> LockMap<T> for std::sync::MutexGuard<'a, T> {}
 #[cfg(feature = "spin")]
 impl<'a, T> LockMap<T> for spin::mutex::MutexGuard<'a, T> {}
 
-#[cfg(feature = "parking_lot")]
-impl<'a, T> LockMap<T> for parking_lot::MutexGuard<'a, T> {}
+#[cfg(feature = "lock_api")]
+impl<'a, T, G: lock_api::RawMutex> LockMap<T> for lock_api::MutexGuard<'a, G, T> {}
+
+#[cfg(test)]
+mod tests {
+    use crate::prelude::*;
+
+    static MUTEX: std::sync::Mutex<bool> = std::sync::Mutex::new(false);
+
+    #[test]
+    fn test_lock_map() {
+        MUTEX.lock().map(|mut m| m.flip()).unwrap();
+    }
+}
