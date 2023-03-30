@@ -1,55 +1,58 @@
 use quork_proc::{lstrip_lines, rstrip_lines, strip_lines};
 
-const WHITESPACE: &str = "           ";
 
+#[test]
 fn test_multiline_both() {
-    let expected = r#"function foo() {
-return "bar";
+    let expected = "function foo() {
+return \"bar\";
 }
-"#;
+";
 
     let actual = strip_lines!(
-        r#"
+        "
         function foo() {
-            return "bar";
+            return \"bar\";
         }
-    "#
+    "
     );
 
     assert_eq!(actual, expected);
 }
 
+#[test]
 fn test_multiline_left() {
-    let expected = r#"function foo() {{
-let foo = "bar";
-        return foo;
-}}
-"#;
+    let expected = "function foo() {
+let foo = \"bar\";
+return foo;
+}
+";
 
     let actual = lstrip_lines!(
-        r#"
+        "
         function foo() {
-            return "bar";
+            let foo = \"bar\";
+            return foo;
         }
-    "#
+    "
     );
 
     assert_eq!(actual, expected);
 }
 
+#[test]
 fn test_multiline_right() {
-    let expected = r#"function foo() {{
-let foo = "bar";
-return foo;
-}}
-"#;
-
-    let actual = rstrip_lines!(
-        r#"
-        function foo() {
-            return "bar";
+    let expected = "        function foo() {
+            return \"bar\";
         }
-    "#
+";
+
+    #[rustfmt::skip]
+    let actual = rstrip_lines!(
+        "
+        function foo() {
+            return \"bar\";
+        }\t\t\t
+    "
     );
 
     assert_eq!(actual, expected);

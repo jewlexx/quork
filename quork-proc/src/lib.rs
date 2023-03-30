@@ -1,9 +1,11 @@
+use proc_macro_error::proc_macro_error;
 use strip::strip_inner;
 use syn::{parse_macro_input, DeriveInput, LitStr};
 
 mod const_str;
 #[macro_use]
 mod error;
+mod from_tuple;
 mod new;
 mod strip;
 mod time_fn;
@@ -27,6 +29,13 @@ pub fn derive_const_str(input: proc_macro::TokenStream) -> proc_macro::TokenStre
 pub fn derive_new(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
     let ast = parse_macro_input!(input as DeriveInput);
     new::derive_new(ast).into()
+}
+
+#[proc_macro_derive(FromTuple)]
+#[proc_macro_error]
+pub fn derive_from_tuple(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
+    let ast = parse_macro_input!(input as DeriveInput);
+    from_tuple::derive_from_tuple(ast).into()
 }
 
 #[proc_macro_attribute]
