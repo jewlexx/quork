@@ -36,15 +36,13 @@ pub fn derive_from_tuple(input: DeriveInput) -> proc_macro2::TokenStream {
         }
     } else {
         quote! {
-                Self {
-                    #(#idents,)*
-                }
+                Self { #(#idents),* }
         }
     };
 
     quote! {
-        impl  #impl_generics #ident #ty_generics #where_clause {
-            fn from_tuple(#(#idents: #types),*) -> Self {
+        impl #impl_generics From<(#(#types),*)> for #ident #ty_generics #where_clause {
+            fn from((#(#idents),*): (#(#types),*)) -> Self {
                 #struct_instantiation
             }
         }
