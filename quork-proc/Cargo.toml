@@ -1,8 +1,12 @@
 [package]
 name = "quork-proc"
-description = "The proc macros for quork (not intended for independant use)"
 license = "MIT"
 version = "0.2.0"
+description = "The proc macros for quork (not intended for independant use)"
+authors = ["Juliette Cordor"]
+documentation = "https://docs.rs/quork"
+repository = "https://github.com/jewlexx/quork.git"
+homepage = "https://github.com/jewlexx/quork.git"
 edition = "2018"
 
 [lib]
