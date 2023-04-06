@@ -1,8 +1,5 @@
 #![warn(missing_docs)]
-
-//! A little crate that helps with interacting with the system
-//!
-//! The lower levels can be hard. So this crate is intended to help with that by abstracting the lower levels to high level code
+#![doc = include_str!("../README.md")]
 
 pub mod prelude {
     //! `use quork::prelude::*` To include common helpful items
