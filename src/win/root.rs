@@ -6,7 +6,7 @@ use std::{
 };
 
 use windows::Win32::{
-    Foundation::{CloseHandle, INVALID_HANDLE_VALUE, TRUE},
+    Foundation::{CloseHandle, INVALID_HANDLE_VALUE},
     Security::{GetTokenInformation, TokenElevation, TOKEN_ELEVATION, TOKEN_QUERY},
     System::Threading::{GetCurrentProcess, OpenProcessToken},
 };
@@ -16,7 +16,8 @@ pub fn is_elevated() -> bool {
     unsafe {
         let mut token = INVALID_HANDLE_VALUE;
 
-        let elevated = if OpenProcessToken(GetCurrentProcess(), TOKEN_QUERY, &mut token) == TRUE {
+        // TODO: Handle errors better
+        let elevated = if OpenProcessToken(GetCurrentProcess(), TOKEN_QUERY, &mut token).is_ok() {
             let mut elevation: MaybeUninit<TOKEN_ELEVATION> = MaybeUninit::uninit();
             let mut size = mem::size_of::<TOKEN_ELEVATION>() as u32;
             if GetTokenInformation(
@@ -25,7 +26,8 @@ pub fn is_elevated() -> bool {
                 Some(elevation.as_mut_ptr() as *mut c_void),
                 size,
                 &mut size,
-            ) == TRUE
+            )
+            .is_ok()
             {
                 elevation.assume_init().TokenIsElevated != 0
             } else {
@@ -36,7 +38,7 @@ pub fn is_elevated() -> bool {
         };
 
         if token != INVALID_HANDLE_VALUE {
-            CloseHandle(token);
+            _ = CloseHandle(token);
         }
 
         elevated
