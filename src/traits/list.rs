@@ -1,3 +1,6 @@
-pub trait ListVariants<const N: usize> {
-    const fn list_variants() -> [Self; N];
+pub trait ListVariants<const N: usize>
+where
+    Self: Sized,
+{
+    const VAIRANTS: [Self; N];
 }
