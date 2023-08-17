@@ -1,5 +1,6 @@
 use proc_macro2::{Ident, Span, TokenStream};
-use syn::{Data, DeriveInput};
+use proc_macro_error::abort;
+use syn::{spanned::Spanned, Data, DeriveInput};
 
 use proc_macro_crate::{crate_name, FoundCrate};
 
@@ -14,20 +15,35 @@ pub fn enum_list(ast: DeriveInput) -> TokenStream {
         }
     };
 
-    let variants: Vec<()> = match &ast.data {
+    let ident = &ast.ident;
+
+    let variants = match &ast.data {
         Data::Enum(enum_data) => {
-            vec![]
+            let variants = enum_data.variants.iter();
+
+            // if ! variants.all(|variant| variant.fields.is_empty()) {
+
+            // }
+
+            variants
+                .map(|var| {
+                    let var_ident = &var.ident;
+                    if !var.fields.is_empty() {
+                        abort!(var.span(), "Cannot be derived if any variants have fields.\nThis variant has a field.")
+                    }
+
+                    quote! ( #ident::#var_ident )
+                })
+                .collect::<Vec<_>>()
         }
         _ => proc_macro_error::abort_call_site!("Can only be derived on an enum"),
     };
 
-    let ident = &ast.ident;
-
-    let variants = variants.len();
+    let variants_size = variants.len();
 
     quote::quote! {
-        impl #trait_ident<#variants> for #ident {
-            const VARIANTS: [Self;#variants] = [];
+        impl #trait_ident<#variants_size> for #ident {
+            const VARIANTS: [Self;#variants_size] = [#(#variants,)*];
         }
     }
 }

@@ -1,6 +1,6 @@
-use quork_proc::ListVariants;
+use quork::traits::list::ListVariants;
 
-#[derive(ListVariants)]
+#[derive(Debug, ListVariants, PartialEq, Eq)]
 enum Variants {
     Var1,
     Var2,
@@ -8,4 +8,9 @@ enum Variants {
 }
 
 #[test]
-fn test_variants() {}
+fn test_variants() {
+    assert_eq!(
+        Variants::VARIANTS,
+        [Variants::Var1, Variants::Var2, Variants::Var3]
+    )
+}

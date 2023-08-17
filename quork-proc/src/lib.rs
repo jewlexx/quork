@@ -16,6 +16,7 @@ extern crate quote;
 
 /// Implement [`quork::ListVariants`] for enums
 #[proc_macro_derive(ListVariants)]
+#[proc_macro_error]
 pub fn derive_enum_list(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
     let ast = parse_macro_input!(input as DeriveInput);
     enum_list::enum_list(ast).into()
