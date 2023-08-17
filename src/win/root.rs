@@ -1,4 +1,4 @@
-//! Checks user root privelages
+//! Checks if process has root privelages
 
 use std::{
     ffi::c_void,
@@ -11,7 +11,7 @@ use windows::Win32::{
     System::Threading::{GetCurrentProcess, OpenProcessToken},
 };
 
-/// Checks if a user is elevated
+/// Checks if the process is elevated
 pub fn is_elevated() -> windows::core::Result<bool> {
     unsafe {
         let mut token = INVALID_HANDLE_VALUE;

@@ -1,4 +1,4 @@
-//! Checks if the current user has root privileges.
+//! Checks if the current process has root privileges.
 
 #[derive(Debug, thiserror::Error)]
 /// Errors when checking if process is root
