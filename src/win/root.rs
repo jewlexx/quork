@@ -12,35 +12,32 @@ use windows::Win32::{
 };
 
 /// Checks if a user is elevated
-pub fn is_elevated() -> bool {
+pub fn is_elevated() -> windows::core::Result<bool> {
     unsafe {
         let mut token = INVALID_HANDLE_VALUE;
 
         // TODO: Handle errors better
-        let elevated = if OpenProcessToken(GetCurrentProcess(), TOKEN_QUERY, &mut token).is_ok() {
+        let elevated = {
+            OpenProcessToken(GetCurrentProcess(), TOKEN_QUERY, &mut token)?;
+
             let mut elevation: MaybeUninit<TOKEN_ELEVATION> = MaybeUninit::uninit();
             let mut size = mem::size_of::<TOKEN_ELEVATION>() as u32;
-            if GetTokenInformation(
+
+            GetTokenInformation(
                 token,
                 TokenElevation,
                 Some(elevation.as_mut_ptr() as *mut c_void),
                 size,
                 &mut size,
-            )
-            .is_ok()
-            {
-                elevation.assume_init().TokenIsElevated != 0
-            } else {
-                false
-            }
-        } else {
-            false
+            )?;
+
+            elevation.assume_init().TokenIsElevated != 0
         };
 
         if token != INVALID_HANDLE_VALUE {
-            _ = CloseHandle(token);
+            CloseHandle(token)?;
         }
 
-        elevated
+        Ok(elevated)
     }
 }
