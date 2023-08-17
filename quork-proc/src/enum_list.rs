@@ -1,5 +1,5 @@
 use proc_macro2::{Ident, Span, TokenStream};
-use syn::DeriveInput;
+use syn::{Data, DeriveInput};
 
 use proc_macro_crate::{crate_name, FoundCrate};
 
@@ -14,5 +14,20 @@ pub fn enum_list(ast: DeriveInput) -> TokenStream {
         }
     };
 
-    todo!()
+    let variants: Vec<()>: = match &ast.data {
+        Data::Enum(enum_data) => {
+            vec![]
+        }
+        _ => proc_macro_error::abort_call_site!("Can only be derived on an enum"),
+    };
+
+    let ident = &ast.ident;
+
+    let variants = variants.len();
+
+    quote::quote! {
+        impl #trait_ident for #ident {
+            const VARIANT: [Self;#variants] = [];
+        }
+    }
 }
