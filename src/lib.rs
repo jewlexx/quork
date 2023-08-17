@@ -9,6 +9,7 @@ pub mod prelude {
             pub use crate::traits::flip::*;
             pub use crate::traits::lock::*;
             pub use crate::traits::truthy::*;
+            pub use crate::traits::list::*;
         }
     }
 
