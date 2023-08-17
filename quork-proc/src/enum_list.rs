@@ -14,7 +14,7 @@ pub fn enum_list(ast: DeriveInput) -> TokenStream {
         }
     };
 
-    let variants: Vec<()>: = match &ast.data {
+    let variants: Vec<()> = match &ast.data {
         Data::Enum(enum_data) => {
             vec![]
         }
@@ -26,8 +26,8 @@ pub fn enum_list(ast: DeriveInput) -> TokenStream {
     let variants = variants.len();
 
     quote::quote! {
-        impl #trait_ident for #ident {
-            const VARIANT: [Self;#variants] = [];
+        impl #trait_ident<#variants> for #ident {
+            const VARIANTS: [Self;#variants] = [];
         }
     }
 }
