@@ -10,7 +10,7 @@ pub use quork_proc::*;
 /// ## Fizz Buzz
 ///
 /// ```
-/// #use quork::do_while;
+/// # use quork::do_while;
 /// let mut i = 1;
 ///
 /// do_while!(
