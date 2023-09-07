@@ -27,7 +27,7 @@ cfg-if = "1.0"
 windows = { version = "0.51", features = ["Win32_Networking_NetworkListManager", "Win32_System_Com", "Win32_Foundation", "Win32_System_Threading", "Win32_Security"] }
 
 [target.'cfg(unix)'.dependencies]
-nix = "0.26"
+nix = { version = "0.27", features = ["user"] }
 
 [features]
 default = ["all"]
