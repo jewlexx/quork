@@ -14,5 +14,6 @@ A collection of small things that don't deserve their own crate
 - Macro to time how long a function takes to execute
 - Macros to strip leading whitespace from string
 - Macro to derive the From trait for a tuple type
+- Do While loop
 
 **Made with 💗 by Juliette Cordor**
