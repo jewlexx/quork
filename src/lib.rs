@@ -27,7 +27,7 @@ pub mod win;
 pub mod unix;
 
 #[cfg(feature = "macros")]
-pub use quork_proc as macros;
+pub mod macros;
 
 #[cfg(feature = "traits")]
 pub mod traits;
