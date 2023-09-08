@@ -4,16 +4,6 @@ A collection of small things that don't deserve their own crate
 
 ## Features
 
-- Traits to flip booleans
-- Trait to map a Mutex
-- Trait to check if a value contains truth
-- Check if the current process is elevated
-- Check network connectivity (Windows only)
-- Macro to derive a constant implementation turn enum into a string
-- Macro to derive a new fn
-- Macro to time how long a function takes to execute
-- Macros to strip leading whitespace from string
-- Macro to derive the From trait for a tuple type
-- Do While loop
+For a list of features go to the [Feature List Wiki page](https://github.com/jewlexx/quork/wiki/Quork-Feature-List)
 
 **Made with 💗 by Juliette Cordor**
