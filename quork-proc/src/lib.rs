@@ -52,7 +52,13 @@ pub fn time(
     args: proc_macro::TokenStream,
     input: proc_macro::TokenStream,
 ) -> proc_macro::TokenStream {
-    time_fn::time_inner(args.into(), input.into()).into()
+    let args_str = args.to_string();
+    let fmt = match args_str.as_str() {
+        "ms" | "milliseconds" => time_fn::TimeFormat::Milliseconds,
+        "ns" | "nanoseconds" => time_fn::TimeFormat::Nanoseconds,
+        _ => time_fn::TimeFormat::Seconds,
+    };
+    time_fn::time_inner(&fmt, input.into()).into()
 }
 
 #[proc_macro]
