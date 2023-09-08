@@ -23,13 +23,11 @@ pub(crate) enum ComError {
 }
 
 impl ComInit {
-    pub(crate) unsafe fn init() -> Result<(), ComError> {
-        let mut com_init = COM_INIT.lock()?;
+    pub(crate) unsafe fn init() {
+        let mut com_init = COM_INIT.lock().expect("unpoisoned mutex");
         if !com_init.initialized {
             com_init.initialized = CoInitializeEx(None, COINIT_MULTITHREADED).is_ok();
         }
-
-        Ok(())
     }
 }
 
