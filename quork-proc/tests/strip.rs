@@ -1,6 +1,5 @@
 use quork_proc::{lstrip_lines, rstrip_lines, strip_lines};
 
-
 #[test]
 fn test_multiline_both() {
     let expected = "function foo() {
