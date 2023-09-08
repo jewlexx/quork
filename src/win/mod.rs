@@ -4,12 +4,12 @@ use std::sync::Mutex;
 
 use windows::Win32::System::Com::{CoInitializeEx, CoUninitialize, COINIT_MULTITHREADED};
 
-pub(crate) static COM_INIT: Mutex<ComInit> = Mutex::new(ComInit { initialized: false });
-
 #[cfg(feature = "network")]
 pub mod network;
 #[cfg(feature = "root")]
 pub mod root;
+
+pub(crate) static COM_INIT: Mutex<ComInit> = Mutex::new(ComInit { initialized: false });
 
 #[derive(Debug, Clone)]
 pub(crate) struct ComInit {
