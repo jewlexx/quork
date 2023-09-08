@@ -4,7 +4,7 @@ use syn::{spanned::Spanned, Data, DeriveInput};
 
 use proc_macro_crate::{crate_name, FoundCrate};
 
-pub fn enum_list(ast: DeriveInput) -> TokenStream {
+pub fn enum_list(ast: &DeriveInput) -> TokenStream {
     let found_crate = crate_name("quork").expect("quork is present in `Cargo.toml`");
 
     let trait_ident = match found_crate {
@@ -28,7 +28,7 @@ pub fn enum_list(ast: DeriveInput) -> TokenStream {
                     let var_ident = &var.ident;
                     if !var.fields.is_empty() {
                         variants_have_fields = true;
-                        emit_error!(var.span(), "This variant has one or more fields")
+                        emit_error!(var.span(), "This variant has one or more fields");
                     }
 
                     quote! ( #ident::#var_ident )

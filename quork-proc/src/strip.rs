@@ -7,7 +7,7 @@ pub enum Alignment {
     None,
 }
 
-pub fn strip_inner(literal: LitStr, alignment: Alignment) -> TokenStream {
+pub fn funclike(literal: &LitStr, alignment: &Alignment) -> TokenStream {
     let value = literal.value();
 
     let mut lines = value.lines().collect::<Vec<&str>>();

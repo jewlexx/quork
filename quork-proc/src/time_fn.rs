@@ -8,7 +8,7 @@ enum TimeFormat {
     Nanoseconds,
 }
 
-pub fn time_inner(attrs: TokenStream, item: TokenStream) -> TokenStream {
+pub fn attribute(attrs: &TokenStream, item: TokenStream) -> TokenStream {
     let time_format: u8 = match attrs.to_string().as_str() {
         "s" | "seconds" | "" => TimeFormat::Seconds,
         "ms" | "milliseconds" => TimeFormat::Milliseconds,
@@ -20,7 +20,7 @@ pub fn time_inner(attrs: TokenStream, item: TokenStream) -> TokenStream {
 
     let input: syn::ItemFn = match syn::parse2(item.clone()) {
         Ok(input) => input,
-        Err(error) => return crate::error::token_stream_with_error(item, error),
+        Err(error) => return crate::error::token_stream_with(item, error),
     };
 
     let name = &input.sig.ident;
