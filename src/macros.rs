@@ -62,6 +62,6 @@ mod tests {
             false
         );
 
-        assert_eq!(i, 1, "Do while loop should have run once")
+        assert_eq!(i, 1, "Do while loop should have run once");
     }
 }

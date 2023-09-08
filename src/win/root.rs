@@ -1,9 +1,6 @@
 //! Checks if process has root privelages
 
-use std::{
-    ffi::c_void,
-    mem::{self, MaybeUninit},
-};
+use std::mem::{self, MaybeUninit};
 
 use windows::Win32::{
     Foundation::{CloseHandle, INVALID_HANDLE_VALUE},
@@ -12,6 +9,11 @@ use windows::Win32::{
 };
 
 /// Checks if the process is elevated
+///
+/// # Errors
+/// - Cannot open process token ([`OpenProcessToken`])
+/// - Cannot get token information ([`GetTokenInformation`])
+/// - Cannot close handle ([`CloseHandle`])
 pub fn is_elevated() -> windows::core::Result<bool> {
     unsafe {
         let mut token = INVALID_HANDLE_VALUE;
@@ -21,12 +23,13 @@ pub fn is_elevated() -> windows::core::Result<bool> {
             OpenProcessToken(GetCurrentProcess(), TOKEN_QUERY, &mut token)?;
 
             let mut elevation: MaybeUninit<TOKEN_ELEVATION> = MaybeUninit::uninit();
+            #[allow(clippy::cast_possible_truncation)]
             let mut size = mem::size_of::<TOKEN_ELEVATION>() as u32;
 
             GetTokenInformation(
                 token,
                 TokenElevation,
-                Some(elevation.as_mut_ptr() as *mut c_void),
+                Some(elevation.as_mut_ptr().cast::<std::ffi::c_void>()),
                 size,
                 &mut size,
             )?;
