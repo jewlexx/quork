@@ -1,11 +1,12 @@
 use proc_macro2::TokenStream;
+use proc_macro_error::abort_call_site;
 use syn::{Data, DeriveInput};
 
 pub fn derive(ast: &DeriveInput) -> TokenStream {
     let name = &ast.ident;
     let fields = match &ast.data {
         Data::Struct(v) => &v.fields,
-        _ => return macro_error!("Can only be derived on a struct"),
+        _ => abort_call_site!("Can only be derived on a struct"),
     };
 
     let (con, args): (Vec<_>, Vec<_>) = fields

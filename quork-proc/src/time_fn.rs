@@ -2,25 +2,19 @@ use proc_macro2::TokenStream;
 use quote::{quote, quote_spanned};
 use syn::spanned::Spanned;
 
-enum TimeFormat {
+#[derive(Debug, Copy, Clone)]
+pub enum TimeFormat {
     Seconds,
     Milliseconds,
     Nanoseconds,
 }
 
-pub fn attribute(attrs: &TokenStream, item: TokenStream) -> TokenStream {
-    let time_format: u8 = match attrs.to_string().as_str() {
-        "s" | "seconds" | "" => TimeFormat::Seconds,
-        "ms" | "milliseconds" => TimeFormat::Milliseconds,
-        "ns" | "nanoseconds" => TimeFormat::Nanoseconds,
-        _ => {
-            return quote! { compile_error!("attributes can only be s/ms/ns for seconds, milliseconds and nanoseconds respectively") }
-        }
-    } as u8;
+pub fn attribute(format: TimeFormat, item: &TokenStream) -> TokenStream {
+    let time_format = format as u8;
 
     let input: syn::ItemFn = match syn::parse2(item.clone()) {
         Ok(input) => input,
-        Err(error) => return crate::error::token_stream_with(item, error),
+        Err(error) => return error.into_compile_error(),
     };
 
     let name = &input.sig.ident;

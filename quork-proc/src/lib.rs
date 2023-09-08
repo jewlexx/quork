@@ -7,8 +7,6 @@ use proc_macro_error::proc_macro_error;
 use syn::{parse_macro_input, DeriveInput, LitStr};
 
 mod const_str;
-#[macro_use]
-mod error;
 mod enum_list;
 mod from_tuple;
 mod new;
@@ -39,6 +37,7 @@ pub fn derive_const_str(input: proc_macro::TokenStream) -> proc_macro::TokenStre
 ///
 /// Will follow the form of `new(field: Type, ...) -> Self`, where all fields are required.
 #[proc_macro_derive(New)]
+#[proc_macro_error]
 pub fn derive_new(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
     let ast = parse_macro_input!(input as DeriveInput);
     new::derive(&ast).into()
@@ -58,11 +57,18 @@ pub fn derive_from_tuple(input: proc_macro::TokenStream) -> proc_macro::TokenStr
 ///
 /// You can pass "s", "ms", "ns"
 #[proc_macro_attribute]
+#[proc_macro_error]
 pub fn time(
     args: proc_macro::TokenStream,
     input: proc_macro::TokenStream,
 ) -> proc_macro::TokenStream {
-    time_fn::attribute(&args.into(), input.into()).into()
+    let args_str = args.to_string();
+    let fmt = match args_str.as_str() {
+        "ms" | "milliseconds" => time_fn::TimeFormat::Milliseconds,
+        "ns" | "nanoseconds" => time_fn::TimeFormat::Nanoseconds,
+        _ => time_fn::TimeFormat::Seconds,
+    };
+    time_fn::attribute(fmt, &input.into()).into()
 }
 
 /// Strip whitespace from the right of a string literal on each line
