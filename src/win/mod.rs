@@ -16,23 +16,24 @@ pub(crate) struct ComInit {
     initialized: bool,
 }
 
-impl ComInit {
-    pub(crate) fn init() {
-        let is_init = unsafe { Self::init_com() }.is_ok();
-        COM_INIT.lock().unwrap().initialized = is_init;
-    }
+#[derive(Debug, thiserror::Error)]
+pub(crate) enum ComError {
+    #[error("Failed to lock COM_INIT variable: {0}")]
+    LockError(#[from] std::sync::PoisonError<std::sync::MutexGuard<'static, ComInit>>),
+}
 
-    unsafe fn init_com() -> Result<(), windows::core::Error> {
-        let mut com_init = COM_INIT.lock().unwrap();
+impl ComInit {
+    pub(crate) unsafe fn init() -> Result<(), ComError> {
+        let mut com_init = COM_INIT.lock()?;
         if !com_init.initialized {
-            CoInitializeEx(None, COINIT_MULTITHREADED)?;
-            com_init.initialized = true;
+            com_init.initialized = CoInitializeEx(None, COINIT_MULTITHREADED).is_ok();
         }
 
         Ok(())
     }
 }
 
+// As COM_INIT is a static variable this will be dropped at the end of the program.
 impl Drop for ComInit {
     fn drop(&mut self) {
         unsafe { CoUninitialize() }
