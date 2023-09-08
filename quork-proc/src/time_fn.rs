@@ -1,4 +1,5 @@
 use proc_macro2::TokenStream;
+use proc_macro_error::abort;
 use quote::{quote, quote_spanned};
 use syn::spanned::Spanned;
 
@@ -14,13 +15,13 @@ pub fn time_inner(attrs: TokenStream, item: TokenStream) -> TokenStream {
         "ms" | "milliseconds" => TimeFormat::Milliseconds,
         "ns" | "nanoseconds" => TimeFormat::Nanoseconds,
         _ => {
-            return quote! { compile_error!("attributes can only be s/ms/ns for seconds, milliseconds and nanoseconds respectively") }
+            abort!(attrs.span(), "attributes can only be s/ms/ns for seconds, milliseconds and nanoseconds respectively");
         }
     } as u8;
 
     let input: syn::ItemFn = match syn::parse2(item.clone()) {
         Ok(input) => input,
-        Err(error) => return crate::error::token_stream_with_error(item, error),
+        Err(error) => return error.into_compile_error(),
     };
 
     let name = &input.sig.ident;

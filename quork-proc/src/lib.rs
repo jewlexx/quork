@@ -3,8 +3,6 @@ use strip::strip_inner;
 use syn::{parse_macro_input, DeriveInput, LitStr};
 
 mod const_str;
-#[macro_use]
-mod error;
 mod enum_list;
 mod from_tuple;
 mod new;
@@ -35,6 +33,7 @@ pub fn derive_const_str(input: proc_macro::TokenStream) -> proc_macro::TokenStre
 ///
 /// Will follow the form of `new(field: Type, ...) -> Self`, where all fields are required.
 #[proc_macro_derive(New)]
+#[proc_macro_error]
 pub fn derive_new(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
     let ast = parse_macro_input!(input as DeriveInput);
     new::derive_new(ast).into()
@@ -48,6 +47,7 @@ pub fn derive_from_tuple(input: proc_macro::TokenStream) -> proc_macro::TokenStr
 }
 
 #[proc_macro_attribute]
+#[proc_macro_error]
 pub fn time(
     args: proc_macro::TokenStream,
     input: proc_macro::TokenStream,
