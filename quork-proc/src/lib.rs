@@ -1,4 +1,7 @@
+//! Quork procedural macros crate
+
 #![warn(clippy::pedantic)]
+#![warn(missing_docs)]
 
 use proc_macro_error::proc_macro_error;
 use syn::{parse_macro_input, DeriveInput, LitStr};
@@ -41,6 +44,7 @@ pub fn derive_new(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
     new::derive(&ast).into()
 }
 
+/// Implement the [`std::convert::From`] trait for converting tuples into tuple structs
 #[proc_macro_derive(FromTuple)]
 #[proc_macro_error]
 pub fn derive_from_tuple(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
@@ -48,6 +52,11 @@ pub fn derive_from_tuple(input: proc_macro::TokenStream) -> proc_macro::TokenStr
     from_tuple::derive(&ast).into()
 }
 
+/// Time a given function
+///
+/// Measures the start and finish times of the function, and prints them at the end of the function.
+///
+/// You can pass "s", "ms", "ns"
 #[proc_macro_attribute]
 pub fn time(
     args: proc_macro::TokenStream,
@@ -56,6 +65,7 @@ pub fn time(
     time_fn::attribute(&args.into(), input.into()).into()
 }
 
+/// Strip whitespace from the right of a string literal on each line
 #[proc_macro]
 pub fn strip_lines(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
     let literal = parse_macro_input!(input as LitStr);
@@ -63,6 +73,7 @@ pub fn strip_lines(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
     strip::funclike(&literal, &strip::Alignment::None).into()
 }
 
+/// Strip whitespace from the left and right of a string literal on each line
 #[proc_macro]
 pub fn rstrip_lines(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
     let literal = parse_macro_input!(input as LitStr);
@@ -70,6 +81,7 @@ pub fn rstrip_lines(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
     strip::funclike(&literal, &strip::Alignment::Right).into()
 }
 
+/// Strip whitespace from the left of a string literal on each line
 #[proc_macro]
 pub fn lstrip_lines(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
     let literal = parse_macro_input!(input as LitStr);
