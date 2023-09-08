@@ -9,6 +9,7 @@ pub enum Error {
     WindowsError(#[from] windows::core::Error),
 }
 
+#[allow(clippy::module_name_repetitions)]
 /// Checks if the process has root privileges
 ///
 /// # Errors

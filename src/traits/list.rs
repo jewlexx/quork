@@ -1,3 +1,4 @@
+#![allow(clippy::module_name_repetitions)]
 //! Listing all Variants of an enum
 
 #[cfg(feature = "macros")]
