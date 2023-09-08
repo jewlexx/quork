@@ -12,7 +12,7 @@ impl ContainsTruth for Option<bool> {
     }
 }
 
-impl<T> ContainsTruth for Result<bool, T> {
+impl<E> ContainsTruth for Result<bool, E> {
     fn contains_truth(&self) -> bool {
         matches!(self, Ok(true))
     }

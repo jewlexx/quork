@@ -2,7 +2,7 @@ use proc_macro2::Span;
 use proc_macro_error::abort_call_site;
 use syn::{DeriveInput, Ident, Type};
 
-pub fn derive_from_tuple(input: DeriveInput) -> proc_macro2::TokenStream {
+pub fn derive(input: &DeriveInput) -> proc_macro2::TokenStream {
     let ident = &input.ident;
     let data = &input.data;
     let generics = &input.generics;

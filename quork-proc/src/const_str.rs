@@ -2,7 +2,7 @@ use proc_macro2::TokenStream;
 use quote::quote;
 use syn::{Data, DeriveInput, Fields};
 
-pub fn into_const_str(ast: DeriveInput) -> TokenStream {
+pub fn derive(ast: &DeriveInput) -> TokenStream {
     let name = &ast.ident;
     let vars = match &ast.data {
         Data::Enum(v) => &v.variants,
@@ -11,7 +11,7 @@ pub fn into_const_str(ast: DeriveInput) -> TokenStream {
 
     let mut arms = Vec::<TokenStream>::new();
 
-    for var in vars.iter() {
+    for var in vars {
         let var_name = &var.ident;
 
         let params = match var.fields {

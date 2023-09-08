@@ -2,19 +2,20 @@
 
 #[derive(Debug, thiserror::Error)]
 /// Errors when checking if process is root
-pub enum RootError {
+pub enum Error {
     #[cfg(windows)]
     /// The Windows Process elevation cannot be checked
     #[error("Windows related error: {0}")]
     WindowsError(#[from] windows::core::Error),
 }
 
+#[allow(clippy::module_name_repetitions)]
 /// Checks if the process has root privileges
 ///
 /// # Errors
 /// - On Windows, may return an error if the process elevation cannot be checked
 /// - On Unix-like, no errors will ever be returned
-pub fn is_root() -> Result<bool, RootError> {
+pub fn is_root() -> Result<bool, Error> {
     cfg_if::cfg_if! {
         if #[cfg(windows)] {
             let root = crate::win::root::is_elevated()?;
@@ -25,6 +26,8 @@ pub fn is_root() -> Result<bool, RootError> {
 
     Ok(root)
 }
+
+// TODO: Platform agnostic Uid struct?
 
 #[cfg(test)]
 mod tests {

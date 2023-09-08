@@ -9,8 +9,8 @@ pub enum TimeFormat {
     Nanoseconds,
 }
 
-pub fn time_inner(format: &TimeFormat, item: TokenStream) -> TokenStream {
-    let time_format = *format as u8;
+pub fn attribute(format: TimeFormat, item: &TokenStream) -> TokenStream {
+    let time_format = format as u8;
 
     let input: syn::ItemFn = match syn::parse2(item.clone()) {
         Ok(input) => input,

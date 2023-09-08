@@ -2,6 +2,7 @@
 //!
 //! Can theoretically be anything but designed primarily for Mutex Locks
 
+#[allow(clippy::module_name_repetitions)]
 /// Map a mutex lock
 pub trait LockMap<T: ?Sized> {
     /// Maps a mutex lock of T to a value of U

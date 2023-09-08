@@ -46,7 +46,11 @@ pub enum Connectivity {
 }
 
 impl Connectivity {
+    #[must_use]
     /// Gets the current connectivity to a network.
+    ///
+    /// # Panics
+    /// - If the underlying [`Connectivity::try_get()`] method returns an error
     pub fn get() -> Self {
         Self::try_get().unwrap()
     }
@@ -63,6 +67,7 @@ impl Connectivity {
         }
     }
 
+    #[must_use]
     /// Gets the version of the connected network
     ///
     /// Returns `None` if the version could not be determined.
@@ -76,7 +81,7 @@ impl Connectivity {
             | Connectivity::Ipv6Localnetwork
             | Connectivity::Ipv6Subnet
             | Connectivity::Ipv6Notraffic => Some(IpVersion::V6),
-            _ => None,
+            Connectivity::Disconnected => None,
         }
     }
 }
@@ -87,12 +92,12 @@ impl From<NLM_CONNECTIVITY> for Connectivity {
             NLM_CONNECTIVITY_DISCONNECTED => Connectivity::Disconnected,
             NLM_CONNECTIVITY_IPV4_INTERNET => Connectivity::Ipv4Internet,
             NLM_CONNECTIVITY_IPV4_LOCALNETWORK => Connectivity::Ipv4Localnetwork,
-            NLM_CONNECTIVITY_IPV4_NOTRAFFIC => Connectivity::Ipv4Notraffic,
             NLM_CONNECTIVITY_IPV4_SUBNET => Connectivity::Ipv4Subnet,
             NLM_CONNECTIVITY_IPV6_INTERNET => Connectivity::Ipv6Internet,
             NLM_CONNECTIVITY_IPV6_LOCALNETWORK => Connectivity::Ipv6Localnetwork,
             NLM_CONNECTIVITY_IPV6_NOTRAFFIC => Connectivity::Ipv6Notraffic,
             NLM_CONNECTIVITY_IPV6_SUBNET => Connectivity::Ipv6Subnet,
+            // NLM_CONNECTIVITY_IPV4_NOTRAFFIC => Connectivity::Ipv4Notraffic,
             _ => Connectivity::Ipv4Notraffic,
         }
     }
@@ -118,9 +123,12 @@ extern "C" {
     fn get_networklist_manager_clsid() -> GUID;
 }
 
-/// Gets the INetworkListManager COM interface class GUID.
+/// Gets the [`INetworkListManager`] COM interface class GUID.
 ///
 /// Not reccomended for use directly, but rather though the [`Connectivity`] enum
+///
+/// # Errors
+/// - Failure to create com instance
 ///
 /// # Safety
 /// - Interacts with windows api
@@ -133,6 +141,9 @@ pub unsafe fn get_networklist_manager() -> windows::core::Result<INetworkListMan
 /// Gets the current connectivity to a network.
 ///
 /// Not reccomended for use directly, but rather though the [`Connectivity`] enum
+///
+/// # Errors
+/// - Failture to get connectivity
 ///
 /// # Safety
 /// - Interacts with windows api
