@@ -1,9 +1,9 @@
 //! Implement truncation for types
 
-use crate::truncate::Truncate as TruncateStruct;
+use crate::truncate::Truncate;
 
 /// Truncate the data when formatting
-pub trait Truncate
+pub trait Truncation
 where
     Self: Sized + std::fmt::Display,
 {
@@ -12,14 +12,14 @@ where
     /// # Examples
     ///
     /// ```rust
-    /// # use quork::traits::truncate::Truncate;
+    /// # use quork::truncate::Truncation;
     /// let name = "Juliette Cordor".truncate(8);
     ///
     /// assert_eq!(name.to_string(), "Juliette");
     /// ```
-    fn truncate(self, length: usize) -> TruncateStruct<Self> {
-        TruncateStruct::new(self, length)
+    fn truncate(self, length: usize) -> Truncate<Self> {
+        Truncate::new(self, length)
     }
 }
 
-impl<T: std::fmt::Display> Truncate for T {}
+impl<T: std::fmt::Display> Truncation for T {}
