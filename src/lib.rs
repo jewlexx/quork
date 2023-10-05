@@ -46,6 +46,8 @@ cfg_if::cfg_if! {
 pub mod truncate {
     use std::fmt;
 
+    pub use crate::traits::truncate::Truncation;
+
     #[derive(Debug)]
     #[must_use]
     /// A wrapper that truncates its contents when used.
