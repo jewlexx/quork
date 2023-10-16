@@ -113,7 +113,7 @@ pub mod truncate {
     }
 
     #[must_use]
-    #[deprecated = "This is no longer used internally, and was never intended to be used externally"]
+    // #[deprecated = "This is no longer used internally, and was never intended to be used externally"]
     /// A wrapper over a writer that truncates the output to a certain length
     ///
     /// Primarily intended to be used through the [`Truncate`] struct
