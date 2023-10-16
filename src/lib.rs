@@ -99,32 +99,33 @@ pub mod truncate {
 
     impl<T: fmt::Display> fmt::Display for Truncate<T> {
         fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-            use fmt::Write;
-            let mut truncator = TruncatedFormatter::new(f, self.length);
+            // TODO: Remove string allocation here?
+            let truncated = &self.data.to_string()[0..self.length];
 
-            write!(truncator, "{}", self.data)?;
+            truncated.fmt(f)?;
 
             if let Some(ref suffix) = self.suffix {
-                write!(f, "{suffix}")?;
+                suffix.fmt(f)?;
             }
 
             Ok(())
         }
     }
 
-    #[derive(Debug)]
     #[must_use]
+    // #[deprecated = "This is no longer used internally, and was never intended to be used externally"]
     /// A wrapper over a writer that truncates the output to a certain length
     ///
     /// Primarily intended to be used through the [`Truncate`] struct
-    pub struct TruncatedFormatter<'a, T> {
+    pub struct TruncatedFormatter<'a> {
         remaining: usize,
-        writer: &'a mut T,
+        writer: &'a mut fmt::Formatter<'a>,
     }
 
-    impl<'a, T> TruncatedFormatter<'a, T> {
+    #[allow(deprecated)]
+    impl<'a> TruncatedFormatter<'a> {
         /// Construct a new [`TruncatedFormatter`] from the provided writer and length
-        pub fn new(writer: &'a mut T, length: usize) -> Self {
+        pub fn new(writer: &'a mut fmt::Formatter<'a>, length: usize) -> Self {
             Self {
                 remaining: length,
                 writer,
@@ -132,10 +133,8 @@ pub mod truncate {
         }
     }
 
-    impl<'a, T> fmt::Write for TruncatedFormatter<'a, T>
-    where
-        T: fmt::Write,
-    {
+    #[allow(deprecated)]
+    impl<'a> fmt::Write for TruncatedFormatter<'a> {
         fn write_str(&mut self, s: &str) -> fmt::Result {
             if self.remaining < s.len() {
                 self.writer.write_str(&s[0..self.remaining])?;
@@ -146,5 +145,19 @@ pub mod truncate {
                 self.writer.write_str(s)
             }
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::truncate::Truncate;
+
+    #[test]
+    fn test_with_padding() {
+        let truncated = Truncate::new("Hello, World!", 5);
+
+        let padded = format!("{truncated:<10}");
+
+        assert_eq!("Hello     ", padded);
     }
 }
