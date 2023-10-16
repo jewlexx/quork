@@ -100,7 +100,12 @@ pub mod truncate {
     impl<T: fmt::Display> fmt::Display for Truncate<T> {
         fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
             // TODO: Remove string allocation here?
-            let truncated = &self.data.to_string()[0..self.length];
+            let truncated = &self
+                .data
+                .to_string()
+                .chars()
+                .take(self.length)
+                .collect::<String>();
 
             truncated.fmt(f)?;
 
@@ -146,18 +151,26 @@ pub mod truncate {
             }
         }
     }
-}
 
-#[cfg(test)]
-mod tests {
-    use super::truncate::Truncate;
+    #[cfg(test)]
+    mod tests {
+        use super::Truncate;
 
-    #[test]
-    fn test_with_padding() {
-        let truncated = Truncate::new("Hello, World!", 5);
+        #[test]
+        fn test_with_padding() {
+            let truncated = Truncate::new("Hello, World!", 5);
 
-        let padded = format!("{truncated:<10}");
+            let padded = format!("{truncated:<10}");
 
-        assert_eq!("Hello     ", padded);
+            assert_eq!("Hello     ", padded);
+        }
+
+        // This used to crash, this test exists to ensure that doesn't happen again
+        #[test]
+        fn test_longer_length_than_string() {
+            let truncated = Truncate::new("Hey", 15);
+
+            assert_eq!("Hey", truncated.to_string());
+        }
     }
 }
