@@ -87,7 +87,7 @@ pub mod truncate {
         /// # use quork::truncate::Truncate;
         /// let mut name = Truncate::new("Juliette Cordor", 8).with_suffix("...");
         ///
-        /// assert_eq!(name.to_string(), "Juliette...")
+        /// assert_eq!(name.to_string(), "Julie...")
         /// ```
         pub fn with_suffix(self, suffix: impl fmt::Display) -> Self {
             Self {
@@ -104,7 +104,12 @@ pub mod truncate {
                 .data
                 .to_string()
                 .chars()
-                .take(self.length)
+                .take(if let Some(ref suffix) = self.suffix {
+                    // Account for length of suffix
+                    self.length - suffix.len()
+                } else {
+                    self.length
+                })
                 .collect::<String>();
 
             truncated.fmt(f)?;
@@ -155,6 +160,13 @@ pub mod truncate {
     #[cfg(test)]
     mod tests {
         use super::Truncate;
+
+        #[test]
+        fn test_with_suffix() {
+            let suffixed = Truncate::new("Hello, World!", 8).with_suffix("...");
+
+            assert_eq!("Hello...", suffixed.to_string());
+        }
 
         #[test]
         fn test_with_padding() {
