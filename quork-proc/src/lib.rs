@@ -24,6 +24,7 @@ pub fn derive_enum_list(input: proc_macro::TokenStream) -> proc_macro::TokenStre
     enum_list::enum_list(&ast).into()
 }
 
+// TODO: Add heck for case renaming like strum
 /// Implement `const_to_string` for enum variants.
 ///
 /// Converts an enum variant to a string literal, within a constant context.
