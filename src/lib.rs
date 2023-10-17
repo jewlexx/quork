@@ -3,6 +3,14 @@
 #![doc = include_str!("../README.md")]
 #![cfg_attr(not(feature = "std"), no_std)]
 
+cfg_if::cfg_if! {
+    if #[cfg(feature = "std")] {
+        use std as std;
+    } else {
+        use core as std;
+    }
+}
+
 pub mod prelude {
     //! `use quork::prelude::*` To include common helpful items
 
@@ -45,8 +53,9 @@ cfg_if::cfg_if! {
 
 /// Truncation helpers for truncating strings when formatting
 pub mod truncate {
-    use std::fmt;
+    use crate::std::fmt;
 
+    #[cfg(feature = "traits")]
     pub use crate::traits::truncate::Truncation;
 
     #[derive(Debug)]
