@@ -52,6 +52,8 @@ cfg_if::cfg_if! {
 }
 
 /// Truncation helpers for truncating strings when formatting
+// TODO: Make this work without std crate
+#[cfg(feature = "std")]
 pub mod truncate {
     use crate::std::fmt;
 
