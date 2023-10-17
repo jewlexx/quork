@@ -42,7 +42,7 @@ network = []
 root = []
 traits = []
 macros = ["quork-proc"]
-std = ["root"]
+std = []
 
 [build-dependencies]
 cc = "1.0"

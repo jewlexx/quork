@@ -16,10 +16,7 @@ pub mod prelude {
 
     cfg_if::cfg_if! {
         if #[cfg(feature = "traits")] {
-            pub use crate::traits::flip::*;
-            pub use crate::traits::lock::*;
-            pub use crate::traits::truthy::*;
-            pub use crate::traits::list::*;
+            pub use crate::traits::prelude::*;
         }
     }
 
