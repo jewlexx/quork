@@ -5,10 +5,10 @@ use syn::{spanned::Spanned, DeriveInput, Expr, ExprLit, Lit, Variant};
 
 fn ignore_variant(variant: &Variant) -> bool {
     variant.attrs.iter().any(|attr| match attr.meta {
-        syn::Meta::Path(ref p) => p.is_ident("ignore"),
+        syn::Meta::Path(ref p) => p.is_ident("stripped_ignore"),
         _ => abort!(
             attr.span(),
-            "Expected path-style (i.e #[ignore]), found other style attribute macro"
+            "Expected path-style (i.e #[stripped_ignore]), found other style attribute macro"
         ),
     })
 }
