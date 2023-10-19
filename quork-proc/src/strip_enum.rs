@@ -19,7 +19,8 @@ pub fn strip_enum(ast: &DeriveInput) -> TokenStream {
             .iter()
             .filter_map(|variant| {
                 if variant.attrs.iter().any(|attr| match attr.meta {
-                    syn::Meta::Path(ref p) => p.is_ident("no_hook"),
+                    // TODO: Any point checking this?
+                    syn::Meta::Path(ref p) => p.is_ident("strip"),
                     _ => abort!(
                         attr.span(),
                         "Expected path-style (i.e #[no_hook]), found other style attribute macro"
