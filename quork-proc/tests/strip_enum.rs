@@ -2,7 +2,7 @@
 
 use std::fmt::Display;
 
-use strum::{EnumIter, IntoEnumIterator};
+use strum::{Display, EnumIter, IntoEnumIterator};
 
 use quork_proc::Strip;
 
@@ -13,7 +13,7 @@ pub fn enum_to_string<T: IntoEnumIterator + Display>() -> String {
 struct DummyStruct;
 
 #[derive(Strip)]
-#[stripped_meta(derive(EnumIter))]
+#[stripped_meta(derive(EnumIter, Display))]
 enum EnumWithData {
     Test1(DummyStruct),
     Test2(DummyStruct),
@@ -27,6 +27,7 @@ fn has_all_variants() {
 }
 
 #[derive(Strip)]
+#[stripped_meta(derive(EnumIter, Display), strum(serialize_all = "kebab-case"))]
 enum EnumExclude {
     Test1(DummyStruct),
     #[stripped_ignore]

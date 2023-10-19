@@ -20,6 +20,16 @@ struct StrippedData {
     meta: Vec<Expr>,
 }
 
+struct MetaArgs {
+    meta: Vec<Expr>,
+}
+
+impl Parse for MetaArgs {
+    fn parse(input: syn::parse::ParseStream) -> syn::Result<Self> {
+        // input.peek3(token)
+    }
+}
+
 pub fn strip_enum(ast: &DeriveInput) -> TokenStream {
     let data = &ast.data;
     let attrs = &ast.attrs;
@@ -73,18 +83,15 @@ pub fn strip_enum(ast: &DeriveInput) -> TokenStream {
 
             let meta_attrs = attrs
                 .iter()
-                .filter(|attr| !attr.path().is_ident("stripped_meta"));
+                .filter(|attr| attr.path().is_ident("stripped_meta"));
 
             let meta = meta_attrs
-                .flat_map(|attr| {
-                    panic!();
-                    match &attr.meta {
-                        syn::Meta::List(meta) => meta.parse_args(),
-                        _ => abort!(
-                            attr.span(),
-                            "Expected #[stripped_meta = ...]. Found other style attribute."
-                        ),
-                    }
+                .flat_map(|attr| match &attr.meta {
+                    syn::Meta::List(meta) => syn::parse2::<Vec<Expr>>(meta.tokens),
+                    _ => abort!(
+                        attr.span(),
+                        "Expected #[stripped_meta(...)]. Found other style attribute."
+                    ),
                 })
                 .collect();
 
@@ -96,6 +103,8 @@ pub fn strip_enum(ast: &DeriveInput) -> TokenStream {
         }
         _ => abort_call_site!("`Strip` can only be derived for enums"),
     };
+
+    panic!("{:?}", info.meta);
 
     let StrippedData {
         ident,
