@@ -76,12 +76,15 @@ pub fn strip_enum(ast: &DeriveInput) -> TokenStream {
                 .filter(|attr| !attr.path().is_ident("stripped_meta"));
 
             let meta = meta_attrs
-                .flat_map(|attr| match &attr.meta {
-                    syn::Meta::List(meta) => meta.parse_args(),
-                    _ => abort!(
-                        attr.span(),
-                        "Expected #[stripped_meta = ...]. Found other style attribute."
-                    ),
+                .flat_map(|attr| {
+                    panic!();
+                    match &attr.meta {
+                        syn::Meta::List(meta) => meta.parse_args(),
+                        _ => abort!(
+                            attr.span(),
+                            "Expected #[stripped_meta = ...]. Found other style attribute."
+                        ),
+                    }
                 })
                 .collect();
 
@@ -101,7 +104,7 @@ pub fn strip_enum(ast: &DeriveInput) -> TokenStream {
     } = info;
 
     quote! {
-        #(#meta)*
+        #(#[#meta])*
         pub enum #ident {
             #(#variants),*
         }
