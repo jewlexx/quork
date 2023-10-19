@@ -2,7 +2,22 @@ use proc_macro2::{Ident, Span, TokenStream};
 use proc_macro_crate::{crate_name, FoundCrate};
 use proc_macro_error::{abort, abort_call_site};
 use quote::{quote, ToTokens};
-use syn::{spanned::Spanned, DeriveInput};
+use syn::{spanned::Spanned, DeriveInput, Variant};
+
+fn ignore_variant(variant: &Variant) -> bool {
+    variant.attrs.iter().any(|attr| match attr.meta {
+        syn::Meta::Path(ref p) => p.is_ident("ignore"),
+        _ => abort!(
+            attr.span(),
+            "Expected path-style (i.e #[ignore]), found other style attribute macro"
+        ),
+    })
+}
+
+struct StrippedData {
+    ident: Ident,
+    variants: Vec<TokenStream>,
+}
 
 pub fn strip_enum(ast: &DeriveInput) -> TokenStream {
     let struct_name = {
@@ -13,24 +28,25 @@ pub fn strip_enum(ast: &DeriveInput) -> TokenStream {
 
     let data = &ast.data;
 
-    let variants = match data {
-        syn::Data::Enum(ref e) => e
-            .variants
-            .iter()
-            .filter_map(|variant| {
-                if variant.attrs.iter().any(|attr| match attr.meta {
-                    syn::Meta::Path(ref p) => p.is_ident("ignore"),
-                    _ => abort!(
-                        attr.span(),
-                        "Expected path-style (i.e #[ignore]), found other style attribute macro"
-                    ),
-                }) {
-                    None
-                } else {
-                    Some(variant.ident.to_token_stream())
-                }
-            })
-            .collect::<Vec<_>>(),
+    let info: StrippedData = match data {
+        syn::Data::Enum(ref e) => {
+            let variants = e
+                .variants
+                .iter()
+                .filter_map(|variant| {
+                    if ignore_variant(variant) {
+                        None
+                    } else {
+                        Some(variant.ident.to_token_stream())
+                    }
+                })
+                .collect::<Vec<_>>();
+
+            StrippedData {
+                ident: todo!(),
+                var iants,
+            }
+        }
         _ => abort_call_site!("`Strip` can only be derived for enums"),
     };
 
