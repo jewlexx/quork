@@ -64,7 +64,10 @@ pub fn strip_enum(ast: &DeriveInput) -> TokenStream {
                     ),
                 }
             } else {
-                ast.ident.clone()
+                Ident::new(
+                    &format!("{}Stripped", ast.ident.to_string()),
+                    ast.ident.span(),
+                )
             };
 
             StrippedData {

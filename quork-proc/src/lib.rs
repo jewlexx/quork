@@ -18,7 +18,7 @@ mod time_fn;
 #[macro_use]
 extern crate quote;
 
-#[proc_macro_derive(Strip, attributes(stripped_ident, stripped_meta, ignore))]
+#[proc_macro_derive(Strip, attributes(stripped_ident, stripped_meta, stripped_ignore))]
 #[proc_macro_error]
 pub fn strip_enum(input: TokenStream) -> TokenStream {
     let ast = parse_macro_input!(input as DeriveInput);
