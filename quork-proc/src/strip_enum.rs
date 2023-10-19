@@ -20,12 +20,6 @@ struct StrippedData {
 }
 
 pub fn strip_enum(ast: &DeriveInput) -> TokenStream {
-    let struct_name = {
-        let original_ident = &ast.ident;
-        let og_ident_span = original_ident.span();
-        Ident::new(&format!("{}Hooks", original_ident), og_ident_span)
-    };
-
     let data = &ast.data;
     let attrs = &ast.attrs;
 
@@ -70,7 +64,7 @@ pub fn strip_enum(ast: &DeriveInput) -> TokenStream {
                     ),
                 }
             } else {
-                ast.ident
+                ast.ident.clone()
             };
 
             StrippedData {
@@ -81,32 +75,11 @@ pub fn strip_enum(ast: &DeriveInput) -> TokenStream {
         _ => abort_call_site!("`Strip` can only be derived for enums"),
     };
 
-    let command_names = info
-        .variants
-        .iter()
-        .map(|variant| heck::AsKebabCase(variant.to_string()).to_string())
-        .collect::<Vec<_>>();
-
-    let strum = match crate_name("strum").expect("strum is present in `Cargo.toml`") {
-        FoundCrate::Itself => Ident::new("strum", Span::call_site()),
-        FoundCrate::Name(name) => Ident::new(&name, Span::call_site()),
-    };
+    let StrippedData { ident, variants } = info;
 
     quote! {
-        // TODO: Better way of doing this? or add support for meta in proc macro
-        #[derive(Debug, Clone, #strum::Display, #strum::IntoStaticStr, #strum::EnumIter, PartialEq, Eq)]
-        #[strum(serialize_all = "kebab-case")]
-        pub enum #struct_name {
+        pub enum #ident {
             #(#variants),*
-        }
-
-        impl From<String> for #struct_name {
-            fn from(string: String) -> Self {
-                match string.as_str() {
-                    #(#command_names => #struct_name::#variants,)*
-                    _ => panic!("Invalid command name: {}", string),
-                }
-            }
         }
     }
 }
