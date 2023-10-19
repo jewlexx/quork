@@ -27,7 +27,8 @@ fn has_all_variants() {
 }
 
 #[derive(Strip)]
-#[stripped_meta(derive(EnumIter, Display), strum(serialize_all = "kebab-case"))]
+#[stripped_meta(derive(EnumIter, Display))]
+#[stripped_meta(strum(serialize_all = "kebab-case"))]
 enum EnumExclude {
     Test1(DummyStruct),
     #[stripped_ignore]

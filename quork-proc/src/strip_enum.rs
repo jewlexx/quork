@@ -1,8 +1,7 @@
-use proc_macro2::{Ident, Span, TokenStream};
-use proc_macro_crate::{crate_name, FoundCrate};
+use proc_macro2::{Ident, TokenStream};
 use proc_macro_error::{abort, abort_call_site};
 use quote::{quote, ToTokens};
-use syn::{parse::Parse, spanned::Spanned, token, DeriveInput, Expr, ExprLit, Lit, Variant};
+use syn::{spanned::Spanned, DeriveInput, Expr, ExprLit, Lit, Variant};
 
 fn ignore_variant(variant: &Variant) -> bool {
     variant.attrs.iter().any(|attr| match attr.meta {
@@ -20,15 +19,15 @@ struct StrippedData {
     meta: Vec<Expr>,
 }
 
-struct MetaArgs {
-    meta: Vec<Expr>,
-}
+// struct MetaArgs {
+//     meta: Vec<Expr>,
+// }
 
-impl Parse for MetaArgs {
-    fn parse(input: syn::parse::ParseStream) -> syn::Result<Self> {
-        // input.peek3(token)
-    }
-}
+// impl Parse for MetaArgs {
+//     fn parse(input: syn::parse::ParseStream) -> syn::Result<Self> {
+//          input.peek3(token)
+//     }
+// }
 
 pub fn strip_enum(ast: &DeriveInput) -> TokenStream {
     let data = &ast.data;
@@ -81,13 +80,11 @@ pub fn strip_enum(ast: &DeriveInput) -> TokenStream {
                 )
             };
 
-            let meta_attrs = attrs
+            let meta = attrs
                 .iter()
-                .filter(|attr| attr.path().is_ident("stripped_meta"));
-
-            let meta = meta_attrs
-                .flat_map(|attr| match &attr.meta {
-                    syn::Meta::List(meta) => syn::parse2::<Vec<Expr>>(meta.tokens),
+                .filter(|attr| attr.path().is_ident("stripped_meta"))
+                .map(|attr| match &attr.meta {
+                    syn::Meta::List(meta) => meta.parse_args().expect("single meta attribute"),
                     _ => abort!(
                         attr.span(),
                         "Expected #[stripped_meta(...)]. Found other style attribute."
@@ -103,8 +100,6 @@ pub fn strip_enum(ast: &DeriveInput) -> TokenStream {
         }
         _ => abort_call_site!("`Strip` can only be derived for enums"),
     };
-
-    panic!("{:?}", info.meta);
 
     let StrippedData {
         ident,
