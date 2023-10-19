@@ -2,7 +2,7 @@ use proc_macro2::{Ident, Span, TokenStream};
 use proc_macro_crate::{crate_name, FoundCrate};
 use proc_macro_error::{abort, abort_call_site};
 use quote::{quote, ToTokens};
-use syn::{spanned::Spanned, DeriveInput, Variant};
+use syn::{spanned::Spanned, DeriveInput, ExprLit, Lit, Variant};
 
 fn ignore_variant(variant: &Variant) -> bool {
     variant.attrs.iter().any(|attr| match attr.meta {
@@ -27,6 +27,7 @@ pub fn strip_enum(ast: &DeriveInput) -> TokenStream {
     };
 
     let data = &ast.data;
+    let attrs = &ast.attrs;
 
     let info: StrippedData = match data {
         syn::Data::Enum(ref e) => {
@@ -42,15 +43,40 @@ pub fn strip_enum(ast: &DeriveInput) -> TokenStream {
                 })
                 .collect::<Vec<_>>();
 
+            if let Some(info_attr) = attrs
+                .iter()
+                .find(|attr| attr.path().is_ident("stripped_ident"))
+            {
+                match info_attr.meta {
+                    syn::Meta::NameValue(name_value) => {
+                        let ident = name_value.value;
+
+                        if let syn::Expr::Lit(ExprLit {
+                            lit: Lit::Str(string),
+                            ..
+                        }) = ident
+                        {
+                        } else {
+                            abort!(ident.span(), "Expected string literal.")
+                        }
+                    }
+                    _ => abort!(
+                        info_attr.span(),
+                        "Expected #[stripped_ident = \"\"]. Found other style attribute."
+                    ),
+                }
+            }
+
             StrippedData {
                 ident: todo!(),
-                var iants,
+                variants,
             }
         }
         _ => abort_call_site!("`Strip` can only be derived for enums"),
     };
 
-    let command_names = variants
+    let command_names = info
+        .variants
         .iter()
         .map(|variant| heck::AsKebabCase(variant.to_string()).to_string())
         .collect::<Vec<_>>();
