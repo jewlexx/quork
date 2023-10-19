@@ -3,6 +3,7 @@
 #![warn(clippy::pedantic)]
 #![warn(missing_docs)]
 
+use proc_macro::TokenStream;
 use proc_macro_error::proc_macro_error;
 use syn::{parse_macro_input, DeriveInput, LitStr};
 
@@ -11,15 +12,24 @@ mod enum_list;
 mod from_tuple;
 mod new;
 mod strip;
+mod strip_enum;
 mod time_fn;
 
 #[macro_use]
 extern crate quote;
 
+#[proc_macro_derive(Strip, attributes(stripped_ident, stripped_meta, stripped_ignore))]
+#[proc_macro_error]
+pub fn strip_enum(input: TokenStream) -> TokenStream {
+    let ast = parse_macro_input!(input as DeriveInput);
+
+    strip_enum::strip_enum(&ast).into()
+}
+
 /// Implement [`quork::ListVariants`] for enums
 #[proc_macro_derive(ListVariants)]
 #[proc_macro_error]
-pub fn derive_enum_list(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
+pub fn derive_enum_list(input: TokenStream) -> TokenStream {
     let ast = parse_macro_input!(input as DeriveInput);
     enum_list::enum_list(&ast).into()
 }
@@ -29,7 +39,7 @@ pub fn derive_enum_list(input: proc_macro::TokenStream) -> proc_macro::TokenStre
 ///
 /// Converts an enum variant to a string literal, within a constant context.
 #[proc_macro_derive(ConstStr)]
-pub fn derive_const_str(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
+pub fn derive_const_str(input: TokenStream) -> TokenStream {
     let ast = parse_macro_input!(input as DeriveInput);
     const_str::derive(&ast).into()
 }
@@ -39,7 +49,7 @@ pub fn derive_const_str(input: proc_macro::TokenStream) -> proc_macro::TokenStre
 /// Will follow the form of `new(field: Type, ...) -> Self`, where all fields are required.
 #[proc_macro_derive(New)]
 #[proc_macro_error]
-pub fn derive_new(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
+pub fn derive_new(input: TokenStream) -> TokenStream {
     let ast = parse_macro_input!(input as DeriveInput);
     new::derive(&ast).into()
 }
@@ -47,7 +57,7 @@ pub fn derive_new(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
 /// Implement the [`std::convert::From`] trait for converting tuples into tuple structs
 #[proc_macro_derive(FromTuple)]
 #[proc_macro_error]
-pub fn derive_from_tuple(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
+pub fn derive_from_tuple(input: TokenStream) -> TokenStream {
     let ast = parse_macro_input!(input as DeriveInput);
     from_tuple::derive(&ast).into()
 }
@@ -59,10 +69,7 @@ pub fn derive_from_tuple(input: proc_macro::TokenStream) -> proc_macro::TokenStr
 /// You can pass "s", "ms", "ns"
 #[proc_macro_attribute]
 #[proc_macro_error]
-pub fn time(
-    args: proc_macro::TokenStream,
-    input: proc_macro::TokenStream,
-) -> proc_macro::TokenStream {
+pub fn time(args: TokenStream, input: TokenStream) -> TokenStream {
     let args_str = args.to_string();
     let fmt = match args_str.as_str() {
         "ms" | "milliseconds" => time_fn::TimeFormat::Milliseconds,
@@ -74,7 +81,7 @@ pub fn time(
 
 /// Strip whitespace from the right of a string literal on each line
 #[proc_macro]
-pub fn strip_lines(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
+pub fn strip_lines(input: TokenStream) -> TokenStream {
     let literal = parse_macro_input!(input as LitStr);
 
     strip::funclike(&literal, &strip::Alignment::None).into()
@@ -82,7 +89,7 @@ pub fn strip_lines(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
 
 /// Strip whitespace from the left and right of a string literal on each line
 #[proc_macro]
-pub fn rstrip_lines(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
+pub fn rstrip_lines(input: TokenStream) -> TokenStream {
     let literal = parse_macro_input!(input as LitStr);
 
     strip::funclike(&literal, &strip::Alignment::Right).into()
@@ -90,7 +97,7 @@ pub fn rstrip_lines(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
 
 /// Strip whitespace from the left of a string literal on each line
 #[proc_macro]
-pub fn lstrip_lines(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
+pub fn lstrip_lines(input: TokenStream) -> TokenStream {
     let literal = parse_macro_input!(input as LitStr);
 
     strip::funclike(&literal, &strip::Alignment::Left).into()
