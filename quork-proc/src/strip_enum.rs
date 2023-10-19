@@ -19,11 +19,10 @@ pub fn strip_enum(ast: &DeriveInput) -> TokenStream {
             .iter()
             .filter_map(|variant| {
                 if variant.attrs.iter().any(|attr| match attr.meta {
-                    // TODO: Any point checking this?
-                    syn::Meta::Path(ref p) => p.is_ident("strip"),
+                    syn::Meta::Path(ref p) => p.is_ident("ignore"),
                     _ => abort!(
                         attr.span(),
-                        "Expected path-style (i.e #[no_hook]), found other style attribute macro"
+                        "Expected path-style (i.e #[ignore]), found other style attribute macro"
                     ),
                 }) {
                     None
@@ -32,7 +31,7 @@ pub fn strip_enum(ast: &DeriveInput) -> TokenStream {
                 }
             })
             .collect::<Vec<_>>(),
-        _ => abort_call_site!("Can only be derived for enums"),
+        _ => abort_call_site!("`Strip` can only be derived for enums"),
     };
 
     let command_names = variants
