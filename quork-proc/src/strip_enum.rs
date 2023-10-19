@@ -41,9 +41,9 @@ pub fn strip_enum(ast: &DeriveInput) -> TokenStream {
                 .iter()
                 .find(|attr| attr.path().is_ident("stripped_ident"))
             {
-                match info_attr.meta {
+                match &info_attr.meta {
                     syn::Meta::NameValue(name_value) => {
-                        let ident = name_value.value;
+                        let ident = &name_value.value;
 
                         if let syn::Expr::Lit(ExprLit {
                             lit: Lit::Str(string),
