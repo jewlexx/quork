@@ -2,7 +2,7 @@ use proc_macro2::{Ident, Span, TokenStream};
 use proc_macro_crate::{crate_name, FoundCrate};
 use proc_macro_error::{abort, abort_call_site};
 use quote::{quote, ToTokens};
-use syn::{spanned::Spanned, DeriveInput, ExprLit, Lit, Variant};
+use syn::{parse::Parse, spanned::Spanned, token, DeriveInput, ExprLit, Lit, Variant};
 
 fn ignore_variant(variant: &Variant) -> bool {
     variant.attrs.iter().any(|attr| match attr.meta {
@@ -43,7 +43,7 @@ pub fn strip_enum(ast: &DeriveInput) -> TokenStream {
                 })
                 .collect::<Vec<_>>();
 
-            if let Some(info_attr) = attrs
+            let new_ident = if let Some(info_attr) = attrs
                 .iter()
                 .find(|attr| attr.path().is_ident("stripped_ident"))
             {
@@ -56,6 +56,10 @@ pub fn strip_enum(ast: &DeriveInput) -> TokenStream {
                             ..
                         }) = ident
                         {
+                            Ident::new(
+                                &string.value().replace("{}", &ast.ident.to_string()),
+                                ast.ident.span(),
+                            )
                         } else {
                             abort!(ident.span(), "Expected string literal.")
                         }
@@ -65,10 +69,12 @@ pub fn strip_enum(ast: &DeriveInput) -> TokenStream {
                         "Expected #[stripped_ident = \"\"]. Found other style attribute."
                     ),
                 }
-            }
+            } else {
+                ast.ident
+            };
 
             StrippedData {
-                ident: todo!(),
+                ident: new_ident,
                 variants,
             }
         }
