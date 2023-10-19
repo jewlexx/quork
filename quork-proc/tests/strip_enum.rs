@@ -2,7 +2,7 @@
 
 use std::fmt::Display;
 
-use strum::IntoEnumIterator;
+use strum::{EnumIter, IntoEnumIterator};
 
 use quork_proc::Strip;
 
@@ -13,6 +13,7 @@ pub fn enum_to_string<T: IntoEnumIterator + Display>() -> String {
 struct DummyStruct;
 
 #[derive(Strip)]
+#[stripped_meta = derive(EnumIter)]
 enum EnumWithData {
     Test1(DummyStruct),
     Test2(DummyStruct),
