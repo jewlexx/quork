@@ -84,6 +84,7 @@ pub fn strip_enum(ast: &DeriveInput) -> TokenStream {
                 .iter()
                 .filter(|attr| attr.path().is_ident("stripped_meta"))
                 .map(|attr| match &attr.meta {
+                    // TODO: Add inherit metadata
                     syn::Meta::List(meta) => meta.parse_args().expect("single meta attribute"),
                     _ => abort!(
                         attr.span(),
