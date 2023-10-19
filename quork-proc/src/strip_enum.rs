@@ -2,7 +2,7 @@ use proc_macro2::{Ident, Span, TokenStream};
 use proc_macro_crate::{crate_name, FoundCrate};
 use proc_macro_error::{abort, abort_call_site};
 use quote::{quote, ToTokens};
-use syn::{parse::Parse, spanned::Spanned, token, DeriveInput, ExprLit, Lit, Variant};
+use syn::{parse::Parse, spanned::Spanned, token, DeriveInput, Expr, ExprLit, Lit, Variant};
 
 fn ignore_variant(variant: &Variant) -> bool {
     variant.attrs.iter().any(|attr| match attr.meta {
@@ -17,6 +17,7 @@ fn ignore_variant(variant: &Variant) -> bool {
 struct StrippedData {
     ident: Ident,
     variants: Vec<TokenStream>,
+    meta: Vec<Expr>,
 }
 
 pub fn strip_enum(ast: &DeriveInput) -> TokenStream {
@@ -70,17 +71,37 @@ pub fn strip_enum(ast: &DeriveInput) -> TokenStream {
                 )
             };
 
+            let meta_attrs = attrs
+                .iter()
+                .filter(|attr| !attr.path().is_ident("stripped_meta"));
+
+            let meta = meta_attrs
+                .map(|attr| match &attr.meta {
+                    syn::Meta::NameValue(meta) => meta.value.clone(),
+                    _ => abort!(
+                        attr.span(),
+                        "Expected #[stripped_meta = ...]. Found other style attribute."
+                    ),
+                })
+                .collect();
+
             StrippedData {
                 ident: new_ident,
                 variants,
+                meta,
             }
         }
         _ => abort_call_site!("`Strip` can only be derived for enums"),
     };
 
-    let StrippedData { ident, variants } = info;
+    let StrippedData {
+        ident,
+        variants,
+        meta,
+    } = info;
 
     quote! {
+        #(#[#meta])*
         pub enum #ident {
             #(#variants),*
         }
