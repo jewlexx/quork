@@ -37,11 +37,12 @@ nix = { version = "0.27", features = ["user"] }
 
 [features]
 default = ["all"]
-all = ["macros", "root", "traits", "network"]
+all = ["macros", "root", "traits", "network", "std"]
 network = []
-root = []
+root = ["std"]
 traits = []
 macros = ["quork-proc"]
+std = []
 
 [build-dependencies]
 cc = "1.0"

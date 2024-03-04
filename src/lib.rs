@@ -1,16 +1,22 @@
 #![warn(clippy::pedantic)]
 #![warn(missing_docs)]
 #![doc = include_str!("../README.md")]
+#![cfg_attr(not(feature = "std"), no_std)]
+
+cfg_if::cfg_if! {
+    if #[cfg(feature = "std")] {
+        use std as std;
+    } else {
+        use core as std;
+    }
+}
 
 pub mod prelude {
     //! `use quork::prelude::*` To include common helpful items
 
     cfg_if::cfg_if! {
         if #[cfg(feature = "traits")] {
-            pub use crate::traits::flip::*;
-            pub use crate::traits::lock::*;
-            pub use crate::traits::truthy::*;
-            pub use crate::traits::list::*;
+            pub use crate::traits::prelude::*;
         }
     }
 
@@ -43,9 +49,12 @@ cfg_if::cfg_if! {
 }
 
 /// Truncation helpers for truncating strings when formatting
+// TODO: Make this work without std crate
+#[cfg(feature = "std")]
 pub mod truncate {
-    use std::fmt;
+    use crate::std::fmt;
 
+    #[cfg(feature = "traits")]
     pub use crate::traits::truncate::Truncation;
 
     #[derive(Debug)]
