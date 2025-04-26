@@ -2,7 +2,10 @@
 
 use core::sync::atomic::{AtomicBool, Ordering};
 
-use windows::Win32::System::Com::{CoInitializeEx, CoUninitialize, COINIT_MULTITHREADED};
+use windows_sys::Win32::{
+    Foundation::S_OK,
+    System::Com::{CoInitializeEx, CoUninitialize, COINIT_MULTITHREADED},
+};
 
 #[cfg(feature = "network")]
 pub mod network;
@@ -22,7 +25,7 @@ impl ComInit {
     pub(crate) unsafe fn init() {
         if !COM_INIT.initialized.load(Ordering::Relaxed) {
             COM_INIT.initialized.store(
-                CoInitializeEx(None, COINIT_MULTITHREADED).is_ok(),
+                CoInitializeEx(core::ptr::null(), COINIT_MULTITHREADED as u32) == S_OK,
                 Ordering::Relaxed,
             );
         }
