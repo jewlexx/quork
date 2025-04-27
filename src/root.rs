@@ -6,7 +6,7 @@ pub enum Error {
     #[cfg(windows)]
     #[error("Windows related error: {0}")]
     /// The Windows Process elevation cannot be checked
-    WindowsError(#[from] windows::core::Error),
+    WindowsError(#[from] super::win::Error),
 }
 
 #[allow(clippy::module_name_repetitions)]

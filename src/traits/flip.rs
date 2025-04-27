@@ -130,12 +130,15 @@ mod _std {
         type Error = Error<MutexGuard<'a, T>>;
 
         fn flip(&'a self) {
-            self.lock().flip()
+            self.lock().flip();
         }
 
         fn try_flip(&'a self) -> Result<(), Self::Error> {
             match self.try_lock() {
-                Some(mut v) => Ok(v.flip()),
+                Some(mut v) => {
+                    v.flip();
+                    Ok(())
+                }
                 None => Err(Error::LockError),
             }
         }
@@ -197,7 +200,7 @@ mod tests {
 
         assert!(!*PARKING_LOT.lock());
 
-        assert!(PARKING_LOT.flipped())
+        assert!(PARKING_LOT.flipped());
     }
 
     static ATOMIC: AtomicBool = AtomicBool::new(true);

@@ -19,7 +19,7 @@ pub trait LockMap<T: ?Sized> {
     }
 }
 
-impl<'a, T> LockMap<T> for std::sync::MutexGuard<'a, T> {}
+impl<T> LockMap<T> for std::sync::MutexGuard<'_, T> {}
 
 #[cfg(feature = "spin")]
 impl<'a, T> LockMap<T> for spin::mutex::MutexGuard<'a, T> {}
