@@ -100,7 +100,7 @@ impl<'a> TruncatedFormatter<'a> {
 }
 
 #[allow(deprecated)]
-impl<'a> fmt::Write for TruncatedFormatter<'a> {
+impl fmt::Write for TruncatedFormatter<'_> {
     fn write_str(&mut self, s: &str) -> fmt::Result {
         if self.remaining < s.len() {
             self.writer.write_str(&s[0..self.remaining])?;
