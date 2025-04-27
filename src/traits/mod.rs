@@ -19,6 +19,7 @@ pub mod prelude {
         // TODO: Get these working without std crate (as much as possible)
         if #[cfg(feature = "std")] {
             pub use super::flip::*;
+            #[expect(deprecated)]
             pub use super::lock::*;
             pub use super::truncate::*;
             pub use super::map::*;
