@@ -8,7 +8,7 @@ license = "MIT"
 name = "quork-proc"
 repository = "https://github.com/jewlexx/quork.git"
 rust-version = "1.70.0"
-version = "0.4.1"
+version = "0.5.0"
 
 [lib]
 proc-macro = true
