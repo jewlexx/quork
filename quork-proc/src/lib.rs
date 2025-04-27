@@ -105,32 +105,6 @@ pub fn ltrim_lines(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
     trim_lines::trim_lines(&literal, &trim_lines::Alignment::Left).into()
 }
 
-/// Trim whitespace from the right of a string literal on each line
-#[proc_macro]
-pub fn strip_lines(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
-    let literal = parse_macro_input!(input as LitStr);
-
-    trim_lines::trim_lines(&literal, &trim_lines::Alignment::None).into()
-}
-
-/// Trim whitespace from the left and right of a string literal on each line
-#[proc_macro]
-#[deprecated = "Use rtrim_lines (renamed to avoid confusion)"]
-pub fn rstrip_lines(input: TokenStream) -> proc_macro::TokenStream {
-    let literal = parse_macro_input!(input as LitStr);
-
-    trim_lines::trim_lines(&literal, &trim_lines::Alignment::Right).into()
-}
-
-/// Trim whitespace from the left of a string literal on each line
-#[proc_macro]
-#[deprecated = "Use ltrim_lines (renamed to avoid confusion)"]
-pub fn lstrip_lines(input: TokenStream) -> proc_macro::TokenStream {
-    let literal = parse_macro_input!(input as LitStr);
-
-    trim_lines::trim_lines(&literal, &trim_lines::Alignment::Left).into()
-}
-
 /// Creates a [`SizedString`] from a string literal
 ///
 /// # Examples
