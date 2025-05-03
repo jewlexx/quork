@@ -4,7 +4,7 @@
 //!
 //! Especially when using shared memory this can be useful as the actual string will be stored in shared memory, rather than just the pointer to the string.
 
-use std::ops::Deref;
+use core::{fmt::Debug, ops::Deref};
 
 #[derive(Copy, Clone, PartialEq, Eq, Hash)]
 /// A sized, stack allocated string type.
@@ -24,7 +24,7 @@ impl<const N: usize> SizedString<N> {
     #[must_use]
     /// Get the string as a [`str`]
     pub const fn as_str(&self) -> &str {
-        unsafe { std::str::from_utf8_unchecked(&self.0) }
+        unsafe { core::str::from_utf8_unchecked(&self.0) }
     }
 }
 
@@ -32,7 +32,7 @@ impl<const N: usize> Deref for SizedString<N> {
     type Target = str;
 
     fn deref(&self) -> &Self::Target {
-        unsafe { std::str::from_utf8_unchecked(&self.0) }
+        unsafe { core::str::from_utf8_unchecked(&self.0) }
     }
 }
 
@@ -44,7 +44,7 @@ impl<const N: usize> AsRef<str> for SizedString<N> {
 
 impl<const N: usize, T> AsRef<T> for SizedString<N>
 where
-    str: std::convert::AsRef<T>,
+    str: core::convert::AsRef<T>,
 {
     fn as_ref(&self) -> &T {
         let s: &str = self.as_ref();
@@ -52,15 +52,9 @@ where
     }
 }
 
-mod string_trait_impls {
-    use std::fmt::Debug;
-
-    use super::SizedString;
-
-    impl<const N: usize> Debug for SizedString<N> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            f.debug_tuple("SizedString").field(&self.as_str()).finish()
-        }
+impl<const N: usize> Debug for SizedString<N> {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        f.debug_tuple("SizedString").field(&self.as_str()).finish()
     }
 }
 
