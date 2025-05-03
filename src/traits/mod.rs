@@ -1,11 +1,11 @@
 //! Trait implementations
 
+pub mod flip;
+pub mod map;
+pub mod truncate;
 cfg_if::cfg_if! {
     // TODO: Get these working without std crate (as much as possible)
     if #[cfg(feature = "std")] {
-        pub mod flip;
-        pub mod truncate;
-        pub mod map;
     }
 }
 

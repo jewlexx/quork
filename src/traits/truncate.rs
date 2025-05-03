@@ -5,7 +5,7 @@ use crate::truncate::Truncate;
 /// Truncate the data when formatting
 pub trait Truncation
 where
-    Self: Sized + std::fmt::Display,
+    Self: Sized + core::fmt::Display,
 {
     /// Truncate the data
     ///
@@ -22,4 +22,4 @@ where
     }
 }
 
-impl<T: std::fmt::Display> Truncation for T {}
+impl<T: core::fmt::Display> Truncation for T {}
