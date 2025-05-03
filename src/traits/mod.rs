@@ -1,28 +1,18 @@
 //! Trait implementations
 
-cfg_if::cfg_if! {
-    // TODO: Get these working without std crate (as much as possible)
-    if #[cfg(feature = "std")] {
-        pub mod flip;
-        pub mod truncate;
-        pub mod map;
-    }
-}
-
+pub mod flip;
 pub mod list;
+pub mod map;
+#[cfg(feature = "alloc")]
+pub mod truncate;
 pub mod truthy;
 
 /// Trait prelude imports
 pub mod prelude {
-    cfg_if::cfg_if! {
-        // TODO: Get these working without std crate (as much as possible)
-        if #[cfg(feature = "std")] {
-            pub use super::flip::*;
-            pub use super::truncate::*;
-            pub use super::map::*;
-        }
-    }
-
+    pub use super::flip::*;
     pub use super::list::*;
+    pub use super::map::*;
+    #[cfg(feature = "alloc")]
+    pub use super::truncate::*;
     pub use super::truthy::*;
 }

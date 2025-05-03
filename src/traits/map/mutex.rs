@@ -31,6 +31,7 @@ impl<'a, 'g, T> super::TryMap<'a, 'g, T, parking_lot::MutexGuard<'g, T>, LockErr
     }
 }
 
+#[cfg(feature = "std")]
 impl<'a, 'g, T>
     super::TryMap<
         'a,

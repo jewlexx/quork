@@ -16,7 +16,7 @@ use windows::Win32::{
 
 use crate::network::IpVersion;
 
-use super::ComInit;
+use super::com::ComInit;
 
 /// A set of flags that give more information about the underlying connectivity to a network
 ///
