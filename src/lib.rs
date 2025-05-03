@@ -3,6 +3,7 @@
 #![doc = include_str!("../README.md")]
 #![cfg_attr(not(feature = "std"), no_std)]
 
+#[cfg(feature = "alloc")]
 extern crate alloc;
 
 pub mod prelude {
@@ -39,5 +40,6 @@ pub mod sized_string;
 #[cfg(feature = "root")]
 pub mod root;
 
+#[cfg(feature = "alloc")]
 /// Truncation helpers for truncating strings when formatting
 pub mod truncate;
