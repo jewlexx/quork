@@ -1,5 +1,5 @@
-use crate::std::fmt;
 use alloc::string::{String, ToString};
+use core::fmt;
 
 #[cfg(all(feature = "traits", feature = "std"))]
 pub use crate::traits::truncate::Truncation;

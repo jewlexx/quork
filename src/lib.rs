@@ -5,22 +5,11 @@
 
 extern crate alloc;
 
-cfg_if::cfg_if! {
-    if #[cfg(feature = "std")] {
-        use std as std;
-    } else {
-        use core as std;
-    }
-}
-
 pub mod prelude {
     //! `use quork::prelude::*` To include common helpful items
 
-    cfg_if::cfg_if! {
-        if #[cfg(feature = "traits")] {
-            pub use crate::traits::prelude::*;
-        }
-    }
+    #[cfg(feature = "traits")]
+    pub use crate::traits::prelude::*;
 
     #[cfg(feature = "macros")]
     pub use crate::macros::*;
@@ -47,11 +36,8 @@ pub mod network;
 #[cfg(feature = "sized_string")]
 pub mod sized_string;
 
-cfg_if::cfg_if! {
-    if #[cfg(all(feature = "root", feature = "std"))] {
-        pub mod root;
-    }
-}
+#[cfg(feature = "root")]
+pub mod root;
 
 /// Truncation helpers for truncating strings when formatting
 pub mod truncate;

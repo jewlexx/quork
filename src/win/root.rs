@@ -1,6 +1,6 @@
 //! Checks if process has root privelages
 
-use std::mem::{self, MaybeUninit};
+use core::mem::{self, MaybeUninit};
 
 use windows_sys::Win32::{
     Foundation::{CloseHandle, INVALID_HANDLE_VALUE},
@@ -33,7 +33,7 @@ pub fn is_elevated() -> Result<bool> {
             if GetTokenInformation(
                 token,
                 TokenElevation,
-                elevation.as_mut_ptr().cast::<std::ffi::c_void>(),
+                elevation.as_mut_ptr().cast(),
                 size,
                 &mut size,
             ) == 0
